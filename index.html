@@ -179,6 +179,54 @@
         @media (max-width: 768px) {
             .container { grid-template-columns: 1fr; }
         }
+    /* Archive Section at the Bottom */
+        .archive-section {
+            max-width: 1200px;
+            margin: 40px auto 0 auto;
+            background: #111e15;
+            border: 4px solid #2d1e10;
+            padding: 25px;
+            border-radius: 4px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+        }
+
+        .archive-section h2 {
+            font-family: 'Cinzel', serif;
+            color: #a78bfa;
+            font-size: 1.3rem;
+            margin-top: 0;
+            border-bottom: 2px solid #2d1e10;
+            padding-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .recap-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .recap-link {
+            display: block;
+            background: #09100b;
+            border: 1px solid #223c2a;
+            color: #6ee7b7;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 4px;
+            text-align: center;
+            font-family: 'Cinzel', serif;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        .recap-link:hover {
+            background: #223c2a;
+            color: #fca5a5; /* Changes color slightly on hover */
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
     </style>
 </head>
 <body>
@@ -265,6 +313,20 @@
 
         </div>
     </div>
-
+<!-- BOTTOM SECTION: CAMPAIGN ARCHIVES -->
+    <div class="archive-section">
+        <h2>📜 THE CAILLEOTAIRI CHRONICLES (SESSION RECAPS)</h2>
+        <p style="font-size: 0.95rem; color: #94a3b8; margin: 0 0 15px 0; font-style: italic;">
+            Historical logs detailing past deployments, tribal treaties, and anomalies neutralized by the unit.
+        </p>
+        
+        <div class="recap-grid">
+            <!-- Add a new link here for each session PDF you upload -->
+            <a href="recap-session-01.pdf" target="_blank" class="recap-link">📖 Session 1: Arrival</a>
+            <a href="recap-session-02.pdf" target="_blank" class="recap-link">📖 Session 2: The Shift</a>
+            <a href="recap-session-03.pdf" target="_blank" class="recap-link">📖 Session 3: Bramble Fight</a>
+        </div>
+    </div>
+    
 </body>
 </html>
