@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cailleotairi Command Board - Aite-Briethe</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=IM+Fell+English:ital@0;1&display=swap');
+
+        body {
+            background-color: #0d1a11;
+            background-image: radial-gradient(circle at 50% 50%, rgba(147, 51, 234, 0.06) 0%, transparent 60%),
+                              linear-gradient(to right, #08100b, #0f2216);
+            font-family: 'IM Fell English', serif;
+            color: #e2e8f0;
+            margin: 0;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            font-family: 'Cinzel', serif;
+        }
+
+        header h1 {
+            color: #6ee7b7;
+            text-shadow: 0 0 10px rgba(110, 231, 183, 0.4), 2px 2px 4px #000;
+            margin-bottom: 5px;
+            letter-spacing: 2px;
+            font-size: 2.2rem;
+        }
+
+        /* Two-Column Layout for Desktop */
+        .container {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* LEFT COLUMN: Chronometer & Logistics Panel */
+        .sidebar {
+            background: #111e15;
+            border: 4px solid #2d1e10;
+            padding: 20px;
+            border-radius: 4px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+            height: fit-content;
+        }
+
+        .sidebar h2 {
+            font-family: 'Cinzel', serif;
+            color: #a78bfa;
+            font-size: 1.1rem;
+            border-bottom: 2px solid #2d1e10;
+            padding-bottom: 5px;
+            margin-top: 0;
+            letter-spacing: 1px;
+        }
+
+        .date-display {
+            background: #09100b;
+            padding: 15px;
+            border-radius: 4px;
+            border: 1px solid #223c2a;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .date-day {
+            font-size: 1.4rem;
+            color: #fcd34d;
+            font-weight: bold;
+            display: block;
+        }
+
+        .date-meta {
+            font-size: 1rem;
+            color: #94a3b8;
+            margin-top: 5px;
+            display: block;
+        }
+
+        /* Year progress bar using calendar math */
+        .year-progress-container {
+            background: #1a1a1a;
+            border-radius: 10px;
+            height: 8px;
+            width: 100%;
+            margin-top: 12px;
+            overflow: hidden;
+            border: 1px solid #333;
+        }
+        .year-progress-bar {
+            background: linear-gradient(90deg, #34d399, #a78bfa);
+            height: 100%;
+            width: 60.1%; /* Math: Day 202 of 336 */
+        }
+
+        .logistics-note {
+            font-size: 0.95rem;
+            line-height: 1.4;
+            color: #cbd5e1;
+            background: rgba(147, 51, 234, 0.05);
+            border-left: 3px solid #a78bfa;
+            padding: 10px;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        /* RIGHT COLUMN: The Expedition Board */
+        .command-board {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            background: #1b2e20;
+            padding: 25px;
+            border: 12px solid #2d1e10;
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.9), 0 15px 30px rgba(0,0,0,0.7);
+            border-image: linear-gradient(to bottom, #3a2a1a, #1a1008) 10;
+        }
+
+        .order-card {
+            background: #1c2621;
+            border: 1px solid #3f614b;
+            border-left: 5px solid #6ee7b7;
+            padding: 20px;
+            border-radius: 4px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            justify-between: space-between;
+        }
+
+        .order-card.anomaly {
+            border-left: 5px solid #a78bfa;
+            background: #201b28;
+            border-color: #5b4675;
+        }
+
+        .order-card h3 {
+            font-family: 'Cinzel', serif;
+            margin: 0 0 8px 0;
+            color: #f8fafc;
+            font-size: 1.2rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 6px;
+        }
+
+        .meta-line {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            font-style: italic;
+            margin-bottom: 12px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 6px;
+            font-size: 0.7rem;
+            font-family: 'Cinzel', serif;
+            font-weight: bold;
+            border-radius: 3px;
+            float: right;
+        }
+        .bounty { background: #3b1b1b; color: #fca5a5; border: 1px solid #7f1d1d; }
+        .recon { background: #142834; color: #93c5fd; border: 1px solid #1e3a5f; }
+
+        .compensation {
+            margin-top: auto;
+            padding-top: 15px;
+            font-size: 0.95rem;
+            color: #fcd34d;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>CAILLEOTAIRI EXPEDITIONARY BOARD</h1>
+        <p style="color: #a78bfa; margin: 0; font-family: 'Cinzel'; letter-spacing: 1px;">⛺ Aite-Briethe Confluence</p>
+    </header>
+
+    <div class="container">
+        
+<!-- SIDEBAR: CALENDAR & DISPATCHES -->
+        <div class="sidebar">
+            <h2>⏳ CHRONOMETER</h2>
+            <div class="date-display">
+                <span class="date-day">Elm's Day</span>
+                <span class="date-meta">6th of Silver Moon</span>
+                <span class="date-meta" style="color: #6ee7b7; font-family: 'Cinzel'; font-size: 0.85rem; letter-spacing: 1px;">1581 After the Telling</span>
+                
+                <div class="year-progress-container" title="Year Progress: Day 202 of 336">
+                    <div class="year-progress-bar"></div>
+                </div>
+                <small style="font-size: 0.75rem; color: #64748b; display: block; margin-top: 5px;">Day 202 of the Grand Cycle</small>
+            </div>
+
+            <h2>📡 CAILLEOTAIRI DISPATCHES</h2>
+            
+            <div class="logistics-note">
+                <strong>[⚠️ SCOUT REPORT - EAST SECTOR]</strong><br>
+                Ranger Kaelen reports the dense thicket over the "Great Rust Ridge" (the skeleton of the ancient steel bridge) has become hyper-aggressive. The brambles are reacting to the sound of spoken words. Travel in total silence.
+            </div>
+
+            <div class="logistics-note" style="border-left-color: #6ee7b7; background: rgba(110, 231, 183, 0.03);">
+                <strong>[🍃 FEY ALERT - THE CONFLUENCE]</strong><br>
+                A Court of Pixies has nested near the southern watermills. They are currently swapping the inner cogs for woven willow wheels. Do not engage aggressively; trade them shiny river stones to coax them away.
+            </div>
+
+            <div class="logistics-note">
+                <strong>[📋 QUARTERMASTER NOTICE]</strong><br>
+                Supplies of salted venison are low due to the recent road-shifts breaking our supply line to the southern plains. Rations are capped at two strips per day until the paths stabilize.
+            </div>
+
+            <h2>⚔️ COMMANDER'S DIRECTIVE</h2>
+            <p style="font-size: 0.9rem; color: #94a3b8; line-height: 1.5; margin: 0; font-style: italic;">
+                "Eyes on the canopy, boots on the roots. The forest watches us; ensure it only sees strength." — Commander Lorcan
+            </p>
+        </div>
+
+        <!-- MAIN EXPEDITION BOARD -->
+        <div class="command-board">
+
+            <!-- Quest 1 -->
+            <div class="order-card">
+                <div>
+                    <span class="badge recon">Recon</span>
+                    <h3>Re-Map The Grand Bend</h3>
+                    <div class="meta-line">Issued by: Commander Lorcan</div>
+                    <p>The northern river-fork path completely shifted during last night's Anord pulse. A trade party from the Beaver-Tribe is currently stranded. Scout the new pathing.</p>
+                </div>
+                <div class="compensation">🌿 Recompense: 3x Fey-warding Charms</div>
+            </div>
+
+            <!-- Quest 2 -->
+            <div class="order-card anomaly">
+                <div>
+                    <span class="badge bounty">Anomaly</span>
+                    <h3>The Shimmering Elk</h3>
+                    <div class="meta-line">Issued by: Arch-Weaver Maeve</div>
+                    <p>An elder stag has been warped by the Anord. Its footsteps are bleeding raw magic, causing aggressive flora mutations near the confluence lines.</p>
+                </div>
+                <div class="compensation">🏹 Recompense: Moon-Oak Recurve Bow</div>
+            </div>
+
+            <!-- Quest 3 -->
+            <div class="order-card">
+                <div>
+                    <span class="badge bounty">Bounty</span>
+                    <h3>Satyr Tithe Enforcer</h3>
+                    <div class="meta-line">Issued by: Quartermaster</div>
+                    <p>A rogue Satyr calling himself 'The Bramble King' has blocked the eastern logging trail, demanding a toll of memories from the gatherers. Clear him out.</p>
+                </div>
+                <div class="compensation">🪙 Recompense: 120 Trade Scrip</div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>
