@@ -56,8 +56,12 @@
             font-size: 1.1rem;
             border-bottom: 2px solid #2d1e10;
             padding-bottom: 5px;
-            margin-top: 0;
+            margin-top: 20px;
             letter-spacing: 1px;
+        }
+        
+        .sidebar h2:first-of-type {
+            margin-top: 0;
         }
 
         .date-display {
@@ -120,6 +124,7 @@
             border: 12px solid #2d1e10;
             box-shadow: inset 0 0 30px rgba(0,0,0,0.9), 0 15px 30px rgba(0,0,0,0.7);
             border-image: linear-gradient(to bottom, #3a2a1a, #1a1008) 10;
+            height: fit-content;
         }
 
         .order-card {
@@ -131,7 +136,7 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.5);
             display: flex;
             flex-direction: column;
-            justify-between: space-between;
+            justify-content: space-between;
         }
 
         .order-card.anomaly {
@@ -179,7 +184,8 @@
         @media (max-width: 768px) {
             .container { grid-template-columns: 1fr; }
         }
-    /* Archive Section at the Bottom */
+        
+        /* Archive Section at the Bottom */
         .archive-section {
             max-width: 1200px;
             margin: 40px auto 0 auto;
@@ -223,9 +229,132 @@
 
         .recap-link:hover {
             background: #223c2a;
-            color: #fca5a5; /* Changes color slightly on hover */
+            color: #fca5a5;
             transform: translateY(-2px);
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        
+        /* Navigation Tabs */
+        .eolian-nav {
+            display: flex;
+            gap: 10px;
+            max-width: 1200px;
+            margin: 20px auto;
+            border-bottom: 2px solid #2d1e10;
+            padding-bottom: 10px;
+        }
+        .nav-btn {
+            background: #111e15;
+            border: 2px solid #2d1e10;
+            color: #94a3b8;
+            font-family: 'Cinzel', serif;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 4px 4px 0 0;
+            transition: all 0.2s ease;
+        }
+        .nav-btn:hover {
+            color: #6ee7b7;
+            background: #1b2e20;
+        }
+        .nav-btn.active {
+            background: #1b2e20;
+            color: #fcd34d;
+            border-color: #6ee7b7 #2d1e10 #1b2e20 #2d1e10;
+            font-weight: bold;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Layout B: Accordion Architecture */
+        .cryptex-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            font-family: 'IM Fell English', serif;
+        }
+        .accordion-item {
+            background: #111e15;
+            border: 3px solid #2d1e10;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .accordion-header {
+            background: #09100b;
+            padding: 15px 20px;
+            color: #a78bfa;
+            font-family: 'Cinzel', serif;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+        .accordion-header:hover {
+            background: #142118;
+            color: #6ee7b7;
+        }
+        .accordion-content {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+            background: #16241b;
+            color: #e2e8f0;
+            line-height: 1.6;
+        }
+        .accordion-item.open .accordion-content {
+            padding: 20px;
+            max-height: 1000px;
+            border-top: 2px solid #2d1e10;
+        }
+        .accordion-header::after {
+            content: '🔑';
+            font-size: 1rem;
+            transition: transform 0.3s ease;
+        }
+        .accordion-item.open .accordion-header::after {
+            content: '📖';
+        }
+
+        /* Player Journals (Web Storage Notepad) */
+        .scribe-pad {
+            max-width: 1200px;
+            margin: 30px auto 0 auto;
+            background: #131313;
+            border: 4px double #4a3728;
+            padding: 20px;
+            border-radius: 4px;
+        }
+        .scribe-pad h3 {
+            font-family: 'Cinzel', serif;
+            color: #6ee7b7;
+            margin-top: 0;
+            font-size: 1.1rem;
+        }
+        .scribe-textarea {
+            width: 100%;
+            height: 180px;
+            background: #1c1c1c;
+            border: 1px solid #332215;
+            color: #f1f5f9;
+            padding: 12px;
+            font-family: 'IM Fell English', serif;
+            font-size: 1.05rem;
+            box-sizing: border-box;
+            resize: vertical;
+            border-radius: 4px;
+            line-height: 1.5;
+        }
+        .scribe-textarea:focus {
+            outline: none;
+            border-color: #a78bfa;
+            box-shadow: 0 0 8px rgba(167, 139, 250, 0.2);
         }
     </style>
 </head>
@@ -236,11 +365,19 @@
         <p style="color: #a78bfa; margin: 0; font-family: 'Cinzel'; letter-spacing: 1px;">⛺ Aite-Briethe Confluence</p>
     </header>
 
-    <div class="container">
-        
-<!-- SIDEBAR: CALENDAR & DISPATCHES -->
-        <div class="sidebar">
-            <h2>⏳ CHRONOMETER</h2>
+    <!-- 🧭 NAVIGATION TABS -->
+    <div class="eolian-nav">
+        <button class="nav-btn active" onclick="switchTab('board-tab')">📜 Expedition Board</button>
+        <button class="nav-btn" onclick="switchTab('cryptex-tab')">🌀 Eolian Cryptex</button>
+    </div>
+
+    <!-- 🗂️ TAB 1: THE EXPEDITION BOARD -->
+    <div id="board-tab" class="tab-content active">
+        <div class="container">
+            
+            <!-- LEFT COLUMN: Chronometer & Logistics Panel -->
+            <div class="sidebar">
+                        <h2>⏳ CALENDAR</h2>
             <div class="date-display">
                 <span class="date-day">Elm's Day</span>
                 <span class="date-meta">6th of Silver Moon</span>
@@ -251,69 +388,135 @@
                 </div>
                 <small style="font-size: 0.75rem; color: #64748b; display: block; margin-top: 5px;">Day 202 of the Grand Cycle</small>
             </div>
+          
 
-            <h2>📡 CAILLEOTAIRI DISPATCHES</h2>
-            
-            <div class="logistics-note">
-                <strong>[⚠️ SCOUT REPORT - EAST SECTOR]</strong><br>
-                Ranger Kaelen reports the dense thicket over the "Great Rust Ridge" (the skeleton of the ancient steel bridge) has become hyper-aggressive. The brambles are reacting to the sound of spoken words. Travel in total silence.
-            </div>
-
-            <div class="logistics-note" style="border-left-color: #6ee7b7; background: rgba(110, 231, 183, 0.03);">
-                <strong>[🍃 FEY ALERT - THE CONFLUENCE]</strong><br>
-                A Court of Pixies has nested near the southern watermills. They are currently swapping the inner cogs for woven willow wheels. Do not engage aggressively; trade them shiny river stones to coax them away.
-            </div>
-
-            <div class="logistics-note">
-                <strong>[📋 QUARTERMASTER NOTICE]</strong><br>
-                Supplies of salted venison are low due to the recent road-shifts breaking our supply line to the southern plains. Rations are capped at two strips per day until the paths stabilize.
-            </div>
-
-            <h2>⚔️ COMMANDER'S DIRECTIVE</h2>
-            <p style="font-size: 0.9rem; color: #94a3b8; line-height: 1.5; margin: 0; font-style: italic;">
-                "Eyes on the canopy, boots on the roots. The forest watches us; ensure it only sees strength." — Commander Lorcan
-            </p>
-        </div>
-
-        <!-- MAIN EXPEDITION BOARD -->
-        <div class="command-board">
-
-            <!-- Quest 1 -->
-            <div class="order-card">
-                <div>
-                    <span class="badge recon">Recon</span>
-                    <h3>Re-Map The Grand Bend</h3>
-                    <div class="meta-line">Issued by: Commander Lorcan</div>
-                    <p>The northern river-fork path completely shifted during last night's Anord pulse. A trade party from the Beaver-Tribe is currently stranded. Scout the new pathing.</p>
+                <h2>📋 LOGISTICS & REPORTS</h2>
+                <div class="logistics-note">
+                    <strong>[⚠️ SCOUT REPORT - EAST SECTOR]</strong><br>
+                    Ranger Kaelen reports the dense thicket over the "Great Rust Ridge" (the skeleton of the ancient steel bridge) has become hyper-aggressive. The brambles are reacting to the sound of spoken words. Travel in total silence.
                 </div>
-                <div class="compensation">🌿 Recompense: 3x Fey-warding Charms</div>
+
+                <div class="logistics-note" style="border-left-color: #6ee7b7; background: rgba(110, 231, 183, 0.03);">
+                    <strong>[🍃 FEY ALERT - THE CONFLUENCE]</strong><br>
+                    A Court of Pixies has nested near the southern watermills. They are currently swapping the inner cogs for woven willow wheels. Do not engage aggressively; trade them shiny river stones to coax them away.
+                </div>
+
+                <div class="logistics-note">
+                    <strong>[📋 QUARTERMASTER NOTICE]</strong><br>
+                    Supplies of salted venison are low due to the recent road-shifts breaking our supply line to the southern plains. Rations are capped at two strips per day until the paths stabilize.
+                </div>
+
+                <h2>⚔️ COMMANDER'S DIRECTIVE</h2>
+                <p style="font-size: 0.9rem; color: #94a3b8; line-height: 1.5; margin: 0; font-style: italic;">
+                    "Eyes on the canopy, boots on the roots. The forest watches us; ensure it only sees strength." — Commander Lorcan
+                </p>
             </div>
 
-            <!-- Quest 2 -->
-            <div class="order-card anomaly">
-                <div>
-                    <span class="badge bounty">Anomaly</span>
-                    <h3>The Shimmering Elk</h3>
-                    <div class="meta-line">Issued by: Arch-Weaver Maeve</div>
-                    <p>An elder stag has been warped by the Anord. Its footsteps are bleeding raw magic, causing aggressive flora mutations near the confluence lines.</p>
+            <!-- RIGHT COLUMN: The Expedition Board (Cards) -->
+            <div class="command-board">
+                <!-- Quest 1 -->
+                <div class="order-card">
+                    <div>
+                        <span class="badge recon">Recon</span>
+                        <h3>Re-Map The Grand Bend</h3>
+                        <div class="meta-line">Issued by: Commander Lorcan</div>
+                        <p>The northern river-fork path completely shifted during last night's Anord pulse. A trade party from the Beaver-Tribe is currently stranded. Scout the new pathing.</p>
+                    </div>
+                    <div class="compensation">🌿 Recompense: 3x Fey-warding Charms</div>
                 </div>
-                <div class="compensation">🏹 Recompense: Moon-Oak Recurve Bow</div>
-            </div>
 
-            <!-- Quest 3 -->
-            <div class="order-card">
-                <div>
-                    <span class="badge bounty">Bounty</span>
-                    <h3>Satyr Tithe Enforcer</h3>
-                    <div class="meta-line">Issued by: Quartermaster</div>
-                    <p>A rogue Satyr calling himself 'The Bramble King' has blocked the eastern logging trail, demanding a toll of memories from the gatherers. Clear him out.</p>
+                <!-- Quest 2 -->
+                <div class="order-card anomaly">
+                    <div>
+                        <span class="badge bounty">Anomaly</span>
+                        <h3>The Shimmering Elk</h3>
+                        <div class="meta-line">Issued by: Arch-Weaver Maeve</div>
+                        <p>An elder stag has been warped by the Anord. Its footsteps are bleeding raw magic, causing aggressive flora mutations near the confluence lines.</p>
+                    </div>
+                    <div class="compensation">🏹 Recompense: Moon-Oak Recurve Bow</div>
                 </div>
-                <div class="compensation">🪙 Recompense: 120 Trade Scrip</div>
+
+                <!-- Quest 3 -->
+                <div class="order-card">
+                    <div>
+                        <span class="badge bounty">Bounty</span>
+                        <h3>Satyr Tithe Enforcer</h3>
+                        <div class="meta-line">Issued by: Quartermaster</div>
+                        <p>A rogue Satyr calling himself 'The Bramble King' has blocked the eastern logging trail, demanding a toll of memories from the gatherers. Clear him out.</p>
+                    </div>
+                    <div class="compensation">🪙 Recompense: 120 Trade Scrip</div>
+                </div>
             </div>
 
         </div>
     </div>
-<!-- BOTTOM SECTION: CAMPAIGN ARCHIVES -->
+
+    <!-- 🗂️ TAB 2: THE EOLIAN CRYPTEX (Mission Briefing Module) -->
+    <div id="cryptex-tab" class="tab-content">
+        <div class="cryptex-container">
+            <p style="font-style: italic; color: #94a3b8; margin-bottom: 20px;">
+                "Focus the lattice on immediate frequencies; let the archives hold the weight of the past." — High Scriptor Alistair
+            </p>
+
+            <!-- Active Mission Briefing 1 -->
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>📍 CURRENT INTEL: The Grand Bend Shift</span>
+                </div>
+                <div class="accordion-content">
+                    <p><strong>Deployment Order:</strong> The northern river-fork path completely shifted during last night's Anord pulse. A trade party from the Beaver-Tribe is currently trapped within the unstable pocket.</p>
+                    <p><strong>Environmental Hazard:</strong> Local localized reality tears mean spellcasting within 500 feet of the riverbank will trigger wild magic surges.</p>
+                    
+                    <!-- Link out to your full external Compendium site -->
+                    <a href="compendium/anord-pulses.html" target="_blank" class="compendium-link">📖 View Full Archives: Anord Pulses & Reality Fraying ↗</a>
+                </div>
+            </div>
+
+            <!-- Active Mission Briefing 2 -->
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>👥 FACTION DOSSIER: The Beaver-Tribe Accord</span>
+                </div>
+                <div class="accordion-content">
+                    <p><strong>Current Standing:</strong> Uneasy Allies. The Beaver-Tribe controls the lumber shipping lanes through the confluence lines. If their trade party perishes, the Tribal Accord collapses.</p>
+                    <p><strong>Key Contact:</strong> Elder Chogan. He will not tolerate aggressive containment tactics near their sacred dams.</p>
+                    
+                    <!-- Link out to your full external Compendium site -->
+                    <a href="compendium/factions-beaver-tribe.html" target="_blank" class="compendium-link">📖 View Full Archives: History of the Tribal Accord ↗</a>
+                </div>
+            </div>
+
+            <!-- Active Mission Briefing 3 -->
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(this)">
+                    <span>⚠️ THREAT PROFILE: Aggressive Flora (Brambles)</span>
+                </div>
+                <div class="accordion-content">
+                    <p><strong>Field Report:</strong> The dense thicket over the Great Rust Ridge is reacting violently to acoustic vibrations. Sound waves trigger rapid cell division, causing the thorns to strike like whips.</p>
+                    <p><strong>Tactical Advice:</strong> Silence spells or absolute physical quiet is mandatory for transit.</p>
+                    
+                    <!-- Link out to your full external Compendium site -->
+                    <a href="compendium/flora-fauna-hazards.html" target="_blank" class="compendium-link">📖 View Full Archives: Catalog of Anord Mutations ↗</a>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ✍️ THE LOCAL STORAGE NOTEPAD -->
+        <div class="scribe-pad">
+            <h3>✒️ MISSION LOG & COGNIZANCE RECORD</h3>
+            <p style="font-size: 0.85rem; color: #64748b; margin: -5px 0 12px 0; font-style: italic;">
+                Secure parchment encoded to your terminal's optical signature. Scribes cannot inspect these glyphs. (Saved locally in your browser).
+            </p>
+            <textarea 
+                id="cryptexNotepad" 
+                class="scribe-textarea" 
+                placeholder="Transcribe live session notes, clues, or immediate task tracking for this mission..."
+            ></textarea>
+        </div>
+    </div>
+
+    <!-- BOTTOM SECTION: CAMPAIGN ARCHIVES -->
     <div class="archive-section">
         <h2>📜 THE CAILLEOTAIRI CHRONICLES (SESSION RECAPS)</h2>
         <p style="font-size: 0.95rem; color: #94a3b8; margin: 0 0 15px 0; font-style: italic;">
@@ -321,14 +524,47 @@
         </p>
         
         <div class="recap-grid">
-            <!-- Add a new link here for each session PDF you upload -->
-            <a href="Session Recaps/Super Troopers/1-Tensions_in_the_Enchanted_Woods_handout (1).pdf" target="_blank" class="recap-link">📖 Session 1: Tensions in the Echanted Woods</a>
+            <a href="Session Recaps/Super Troopers/1-Tensions_in_the_Enchanted_Woods_handout (1).pdf" target="_blank" class="recap-link">📖 Session 1: Tensions in the Enchanted Woods</a>
             <a href="Session Recaps/Super Troopers/2-Whispers_of_Danger_and_Chaos_handout.pdf" target="_blank" class="recap-link">📖 Session 2: Whispers of Danger and Chaos</a>
             <a href="Session Recaps/Super Troopers/3-Chaos_in_Aite-Briethe's_Market_handout.pdf" target="_blank" class="recap-link">📖 Session 3: Chaos in Aite-Briethe's Market</a>
             <a href="Session Recaps/Super Troopers/4-Counterfeit_Chaos_Unveiled_handout.pdf" target="_blank" class="recap-link">📖 Session 4: Counterfeit Chaos Unveiled</a>
             <a href="Session Recaps/Super Troopers/5-Dark_Ties_and_Hidden_Threats_handout.pdf" target="_blank" class="recap-link">📖 Session 5: Dark Ties and Hidden Threats</a>
         </div>
     </div>
-    
+
+    <script>
+        // 1. Navigation Tab Switching System
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        // 2. Accordion Dropdown Toggling (Layout B)
+        function toggleAccordion(header) {
+            const item = header.parentElement;
+            item.classList.toggle('open');
+        }
+
+        // 3. Persistent Player Notepad (Local Storage)
+        document.addEventListener("DOMContentLoaded", function() {
+            const notepad = document.getElementById("cryptexNotepad");
+
+            const storedNotes = localStorage.getItem("eolian_cryptex_notes");
+            if (storedNotes !== null) {
+                notepad.value = storedNotes;
+            }
+
+            notepad.addEventListener("input", function() {
+                localStorage.setItem("eolian_cryptex_notes", notepad.value);
+            });
+        });
+    </script>
 </body>
 </html>
