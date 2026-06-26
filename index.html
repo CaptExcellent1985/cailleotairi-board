@@ -234,16 +234,15 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
         
-        /* Navigation Tabs */
-        .eolian-nav {
-            display: flex;
-            gap: 10px;
+        /* Navigation Tabs Header styling fix */
+        .nav-tabs {
             max-width: 1200px;
             margin: 20px auto;
             border-bottom: 2px solid #2d1e10;
             padding-bottom: 10px;
         }
-        .nav-btn {
+
+        .tab-btn {
             background: #111e15;
             border: 2px solid #2d1e10;
             color: #94a3b8;
@@ -253,11 +252,11 @@
             border-radius: 4px 4px 0 0;
             transition: all 0.2s ease;
         }
-        .nav-btn:hover {
+        .tab-btn:hover {
             color: #6ee7b7;
             background: #1b2e20;
         }
-        .nav-btn.active {
+        .tab-btn.active {
             background: #1b2e20;
             color: #fcd34d;
             border-color: #6ee7b7 #2d1e10 #1b2e20 #2d1e10;
@@ -322,7 +321,7 @@
             content: '📖';
         }
 
-        /* Player Journals (Web Storage Notepad) */
+        /* Player Journals */
         .scribe-pad {
             max-width: 1200px;
             margin: 30px auto 0 auto;
@@ -356,6 +355,41 @@
             border-color: #a78bfa;
             box-shadow: 0 0 8px rgba(167, 139, 250, 0.2);
         }
+
+        .archive-nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: #111e15;
+            border: 1px dashed #6ee7b7;
+            color: #6ee7b7;
+            padding: 10px 16px;
+            font-family: 'Cinzel', serif;
+            font-size: 0.9rem;
+            text-decoration: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .archive-nav-btn:hover {
+            background: #6ee7b7;
+            color: #050a06;
+            border-style: solid;
+            box-shadow: 0 0 12px rgba(110, 231, 183, 0.4);
+            transform: translateY(-1px);
+        }
+        
+        .compendium-link {
+            display: inline-block;
+            margin-top: 10px;
+            color: #6ee7b7;
+            text-decoration: none;
+        }
+        .compendium-link:hover {
+            text-decoration: underline;
+            color: #fcd34d;
+        }
     </style>
 </head>
 <body>
@@ -366,9 +400,17 @@
     </header>
 
     <!-- 🧭 NAVIGATION TABS -->
-    <div class="eolian-nav">
-        <button class="nav-btn active" onclick="switchTab('board-tab')">📜 Expedition Board</button>
-        <button class="nav-btn" onclick="switchTab('cryptex-tab')">🌀 Eolian Cryptex</button>
+    <div class="nav-tabs" style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+        <!-- Left-aligned functional tabs -->
+        <div class="tab-group" style="display: flex; gap: 8px;">
+            <button class="tab-btn active" onclick="openTab(event, 'board-tab')">📜 Expedition Board</button>
+            <button class="tab-btn" onclick="openTab(event, 'cryptex-tab')">📟 Eolian Cryptex</button>
+        </div>
+        
+        <!-- Right-aligned standalone archive interface -->
+        <a href="compendium-base.html" target="_blank" class="archive-nav-btn">
+            🏛️ Open Grand Archives ↗
+        </a>
     </div>
 
     <!-- 🗂️ TAB 1: THE EXPEDITION BOARD -->
@@ -377,19 +419,18 @@
             
             <!-- LEFT COLUMN: Chronometer & Logistics Panel -->
             <div class="sidebar">
-                        <h2>⏳ CALENDAR</h2>
-            <div class="date-display">
-                <span class="date-day">Elm's Day</span>
-                <span class="date-meta">6th of Silver Moon</span>
-                <span class="date-meta" style="color: #6ee7b7; font-family: 'Cinzel'; font-size: 0.85rem; letter-spacing: 1px;">1581 After the Telling</span>
-                
-                <div class="year-progress-container" title="Year Progress: Day 202 of 336">
-                    <div class="year-progress-bar"></div>
+                <h2>⏳ CALENDAR</h2>
+                <div class="date-display">
+                    <span class="date-day">Elm's Day</span>
+                    <span class="date-meta">6th of Silver Moon</span>
+                    <span class="date-meta" style="color: #6ee7b7; font-family: 'Cinzel'; font-size: 0.85rem; letter-spacing: 1px;">1581 After the Telling</span>
+                    
+                    <div class="year-progress-container" title="Year Progress: Day 202 of 336">
+                        <div class="year-progress-bar"></div>
+                    </div>
+                    <small style="font-size: 0.75rem; color: #64748b; display: block; margin-top: 5px;">Day 202 of the Grand Cycle</small>
                 </div>
-                <small style="font-size: 0.75rem; color: #64748b; display: block; margin-top: 5px;">Day 202 of the Grand Cycle</small>
-            </div>
-          
-
+              
                 <h2>📋 LOGISTICS & REPORTS</h2>
                 <div class="logistics-note">
                     <strong>[⚠️ SCOUT REPORT - EAST SECTOR]</strong><br>
@@ -451,7 +492,7 @@
         </div>
     </div>
 
-    <!-- 🗂️ TAB 2: THE EOLIAN CRYPTEX (Mission Briefing Module) -->
+    <!-- 🗂️ TAB 2: THE EOLIAN CRYPTEX -->
     <div id="cryptex-tab" class="tab-content">
         <div class="cryptex-container">
             <p style="font-style: italic; color: #94a3b8; margin-bottom: 20px;">
@@ -466,8 +507,6 @@
                 <div class="accordion-content">
                     <p><strong>Deployment Order:</strong> The northern river-fork path completely shifted during last night's Anord pulse. A trade party from the Beaver-Tribe is currently trapped within the unstable pocket.</p>
                     <p><strong>Environmental Hazard:</strong> Local localized reality tears mean spellcasting within 500 feet of the riverbank will trigger wild magic surges.</p>
-                    
-                    <!-- Link out to your full external Compendium site -->
                     <a href="compendium/anord-pulses.html" target="_blank" class="compendium-link">📖 View Full Archives: Anord Pulses & Reality Fraying ↗</a>
                 </div>
             </div>
@@ -480,8 +519,6 @@
                 <div class="accordion-content">
                     <p><strong>Current Standing:</strong> Uneasy Allies. The Beaver-Tribe controls the lumber shipping lanes through the confluence lines. If their trade party perishes, the Tribal Accord collapses.</p>
                     <p><strong>Key Contact:</strong> Elder Chogan. He will not tolerate aggressive containment tactics near their sacred dams.</p>
-                    
-                    <!-- Link out to your full external Compendium site -->
                     <a href="compendium/factions-beaver-tribe.html" target="_blank" class="compendium-link">📖 View Full Archives: History of the Tribal Accord ↗</a>
                 </div>
             </div>
@@ -494,15 +531,12 @@
                 <div class="accordion-content">
                     <p><strong>Field Report:</strong> The dense thicket over the Great Rust Ridge is reacting violently to acoustic vibrations. Sound waves trigger rapid cell division, causing the thorns to strike like whips.</p>
                     <p><strong>Tactical Advice:</strong> Silence spells or absolute physical quiet is mandatory for transit.</p>
-                    
-                    <!-- Link out to your full external Compendium site -->
                     <a href="compendium/flora-fauna-hazards.html" target="_blank" class="compendium-link">📖 View Full Archives: Catalog of Anord Mutations ↗</a>
                 </div>
             </div>
-
         </div>
 
-        <!-- ✍️ THE LOCAL STORAGE NOTEPAD -->
+        <!-- ✍️ LOCAL STORAGE NOTEPAD -->
         <div class="scribe-pad">
             <h3>✒️ MISSION LOG & COGNIZANCE RECORD</h3>
             <p style="font-size: 0.85rem; color: #64748b; margin: -5px 0 12px 0; font-style: italic;">
@@ -533,30 +567,33 @@
     </div>
 
     <script>
-        // 1. Navigation Tab Switching System
-        function switchTab(tabId) {
+        // Fixed Tab Switching System
+        function openTab(evt, tabId) {
+            // Hide all tab contents
             document.querySelectorAll('.tab-content').forEach(tab => {
                 tab.classList.remove('active');
             });
-            document.querySelectorAll('.nav-btn').forEach(btn => {
+            // Remove active status from all buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
             
+            // Show current tab, add active style to clicked button
             document.getElementById(tabId).classList.add('active');
-            event.currentTarget.classList.add('active');
+            evt.currentTarget.classList.add('active');
         }
 
-        // 2. Accordion Dropdown Toggling (Layout B)
+        // Accordion Dropdown Toggling
         function toggleAccordion(header) {
             const item = header.parentElement;
             item.classList.toggle('open');
         }
 
-        // 3. Persistent Player Notepad (Local Storage)
+        // Persistent Player Notepad
         document.addEventListener("DOMContentLoaded", function() {
             const notepad = document.getElementById("cryptexNotepad");
-
             const storedNotes = localStorage.getItem("eolian_cryptex_notes");
+            
             if (storedNotes !== null) {
                 notepad.value = storedNotes;
             }
