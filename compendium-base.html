@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Eolian Archives - Compendium</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=IM+Fell+English:ital@0;1&display=swap');
+
+        body {
+            background-color: #080f0a;
+            background-image: radial-gradient(circle at 50% 0%, rgba(167, 139, 250, 0.04) 0%, transparent 70%),
+                              linear-gradient(to right, #050a06, #0c1710);
+            font-family: 'IM Fell English', serif;
+            color: #cbd5e1;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Top Mini-Nav to return to the Main Board */
+        .archive-header {
+            background: #0d1a11;
+            border-bottom: 2px solid #2d1e10;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .archive-title {
+            font-family: 'Cinzel', serif;
+            color: #6ee7b7;
+            margin: 0;
+            font-size: 1.4rem;
+            letter-spacing: 1px;
+            text-shadow: 0 0 8px rgba(110, 231, 183, 0.2);
+        }
+
+        .back-to-board {
+            color: #a78bfa;
+            text-decoration: none;
+            font-family: 'Cinzel', serif;
+            font-size: 0.85rem;
+            border: 1px solid #2d1e10;
+            padding: 6px 12px;
+            background: #111e15;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .back-to-board:hover {
+            color: #fcd34d;
+            border-color: #fcd34d;
+            background: #1b2e20;
+        }
+
+        /* Main Wiki Interface Layout */
+        .wiki-container {
+            display: grid;
+            grid-template-columns: 280px 1fr 300px;
+            gap: 25px;
+            max-width: 1600px;
+            width: 100%;
+            margin: 25px auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+            flex: 1;
+        }
+
+        /* 1. LEFT COLUMN: Lore Navigation Index */
+        .wiki-index {
+            background: #0d1a11;
+            border: 2px solid #2d1e10;
+            padding: 20px;
+            border-radius: 4px;
+            height: fit-content;
+            position: sticky;
+            top: 25px;
+        }
+
+        .index-category {
+            font-family: 'Cinzel', serif;
+            color: #a78bfa;
+            font-size: 0.95rem;
+            margin-top: 20px;
+            margin-bottom: 8px;
+            border-bottom: 1px solid #2d1e10;
+            padding-bottom: 4px;
+            letter-spacing: 1px;
+        }
+
+        .index-category:first-of-type { margin-top: 0; }
+
+        .wiki-index ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .wiki-index li { margin-bottom: 6px; }
+
+        .wiki-index a {
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: color 0.15s ease;
+            display: block;
+            padding: 2px 0;
+        }
+
+        .wiki-index a:hover, .wiki-index a.active {
+            color: #6ee7b7;
+            padding-left: 4px;
+            transition: all 0.15s ease;
+        }
+
+        /* 2. CENTER COLUMN: Main Lore Document */
+        .wiki-article {
+            background: #111e15;
+            border: 3px double #2d1e10;
+            padding: 35px;
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            line-height: 1.7;
+            font-size: 1.15rem;
+        }
+
+        .wiki-article h1 {
+            font-family: 'Cinzel', serif;
+            color: #f8fafc;
+            margin-top: 0;
+            font-size: 2.2rem;
+            border-bottom: 2px solid #3f614b;
+            padding-bottom: 10px;
+        }
+
+        .wiki-article p {
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+
+        .wiki-article blockquote {
+            background: rgba(147, 51, 234, 0.03);
+            border-left: 4px solid #a78bfa;
+            margin: 25px 0;
+            padding: 15px 20px;
+            font-style: italic;
+            color: #e2e8f0;
+        }
+
+        .wiki-article h2 {
+            font-family: 'Cinzel', serif;
+            color: #6ee7b7;
+            font-size: 1.4rem;
+            margin-top: 30px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 4px;
+        }
+
+        /* 3. RIGHT COLUMN: Tactical Lore Infobox */
+        .wiki-infobox {
+            background: #142118;
+            border: 4px solid #2d1e10;
+            border-radius: 4px;
+            padding: 15px;
+            height: fit-content;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+            position: sticky;
+            top: 25px;
+        }
+
+        .infobox-title {
+            font-family: 'Cinzel', serif;
+            text-align: center;
+            color: #fcd34d;
+            font-size: 1.1rem;
+            margin-top: 0;
+            margin-bottom: 12px;
+            border-bottom: 2px solid #2d1e10;
+            padding-bottom: 8px;
+        }
+
+        .infobox-image {
+            background: #09100b;
+            border: 1px solid #223c2a;
+            height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+
+        .infobox-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+
+        .infobox-table td {
+            padding: 6px 4px;
+            vertical-align: top;
+        }
+
+        .infobox-label {
+            font-family: 'Cinzel', serif;
+            color: #a78bfa;
+            font-weight: bold;
+            width: 40%;
+        }
+
+        .infobox-value {
+            color: #e2e8f0;
+        }
+
+        .infobox-table tr:not(:last-child) {
+            border-bottom: 1px solid rgba(45, 30, 16, 0.5);
+        }
+
+        /* Responsive Layout Collapse */
+        @media (max-width: 1100px) {
+            .wiki-container {
+                grid-template-columns: 240px 1fr;
+            }
+            .wiki-infobox {
+                grid-column: span 2;
+                position: static;
+                width: 100%;
+                box-sizing: border-box;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .wiki-container {
+                grid-template-columns: 1fr;
+            }
+            .wiki-index, .wiki-infobox {
+                position: static;
+                grid-column: span 1;
+            }
+        }
+		/* 1. LEFT COLUMN: Lore Navigation Index (Updated for Accordions) */
+.wiki-index {
+    background: #0d1a11;
+    border: 2px solid #2d1e10;
+    padding: 15px;
+    border-radius: 4px;
+    height: fit-content;
+    position: sticky;
+    top: 25px;
+}
+
+/* Category Headers as Clickable Elements */
+.index-category {
+    font-family: 'Cinzel', serif;
+    color: #a78bfa;
+    font-size: 0.95rem;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    border-bottom: 1px solid #2d1e10;
+    padding: 8px 0;
+    letter-spacing: 1px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    user-select: none;
+    transition: color 0.2s ease;
+}
+
+.index-category:hover {
+    color: #6ee7b7;
+}
+
+/* Add a subtle indicator arrow */
+.index-category::after {
+    content: '▾';
+    font-size: 0.8rem;
+    transition: transform 0.2s ease;
+}
+
+/* Collapsible Menu List Content Wrapper */
+.index-menu-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 500px; /* Adjust if a category has massive amounts of links */
+    overflow: hidden;
+    transition: max-height 0.25s ease-out;
+}
+
+/* State changes for when a category is collapsed */
+.index-category.collapsed::after {
+    transform: rotate(-90deg);
+}
+
+.index-category.collapsed + .index-menu-list {
+    max-height: 0;
+}
+
+.wiki-index li { 
+    margin-bottom: 6px; 
+    padding-left: 5px;
+}
+
+.wiki-index a {
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.15s ease;
+    display: block;
+    padding: 2px 0;
+}
+
+.wiki-index a:hover, .wiki-index a.active {
+    color: #6ee7b7;
+    padding-left: 4px;
+    transition: all 0.15s ease;
+}
+    </style>
+</head>
+<body>
+
+    <!-- 🌐 ARCHIVE TOP NAVIGATION -->
+    <header class="archive-header">
+        <h1 class="archive-title">🏛️ THE EOLIAN GRAND ARCHIVES</h1>
+        <!-- Points back up to your main index file -->
+        <a href="index.html" class="back-to-board">🔙 Return to Command Board</a>
+    </header>
+
+    <!-- 🗃️ THREE COLUMN INTERFACE -->
+    <div class="wiki-container">
+
+<!-- 🧭 LEFT SIDE: Navigational Archive Index (Now Dynamic!) -->
+        <nav class="wiki-index" id="shared-sidebar">
+            <!-- JavaScript will inject the links here automatically -->
+        </nav>
+
+        <!-- 📜 CENTER: The Active Lore Document -->
+        <main class="wiki-article">
+            <h1>On the Nature of the Anord</h1>
+            
+            <blockquote>
+                "The world does not bleed blood when it is wounded; it bleeds architecture, mathematics, and raw potential. We call this bleeding the Anord, and it is structural failure made manifest." <br>
+                <span style="float: right; font-size: 0.9rem; color: #a78bfa;">— High Scriptor Alistair, Year 142</span>
+            </blockquote>
+
+            <p>The Anord is not a simple corruption or biological blight, but a systemic unraveling of geometric reality itself. Where the Loom of Creation frays, magic bleeds raw into the soil without the stabilizing architecture of ancient ancestral glyphs or natural ley-lines.</p>
+
+            <h2>Anatomical Behavior of a Pulse</h2>
+            <p>When a pulse occurs, physical geography shifts overnight. Rivers twist into impossible angles, long-dead structural ruins re-emerge seamlessly inside living root systems, and distance itself becomes elastic. A path that required three days of march may shorten to a hundred paces, or balloon into an impassable void.</p>
+
+            <h2>Localized Spell Disruptions</h2>
+            <p>Because the mathematical laws governing standard arcana are shattered within an active pulse zone, traditional spell casting becomes highly volatile. Scribes and spell-weavers are strictly ordered to monitor localized containment signatures before executing incantations.</p>
+            
+            <h2>Historical Displacements</h2>
+            <p>Fragments of historical eras long thought consumed by time have been documented reappearing within the deep timber sectors, completely intact but completely hostile to current timeline occupants.</p>
+        </main>
+
+        <!-- 📊 RIGHT SIDE: Quick-Reference Dossier Data -->
+        <aside class="wiki-infobox">
+            <h3 class="infobox-title">Phenomenon Dossier</h3>
+            <div class="infobox-image">🌀</div>
+            
+            <table class="infobox-table">
+                <tr>
+                    <td class="infobox-label">Classification</td>
+                    <td class="infobox-value">Reality Anomaly (Structural)</td>
+                </tr>
+                <tr>
+                    <td class="infobox-label">Threat Index</td>
+                    <td class="infobox-value" style="color: #fca5a5; font-weight: bold;">CRITICAL (Tier IV)</td>
+                </tr>
+                <tr>
+                    <td class="infobox-label">Primary Effect</td>
+                    <td class="infobox-value">Geographical Flux, Spatial Elasticity</td>
+                </tr>
+                <tr>
+                    <td class="infobox-label">Magic State</td>
+                    <td class="infobox-value">Unbound / Highly Volatile</td>
+                </tr>
+                <tr>
+                    <td class="infobox-label">Countermeasure</td>
+                    <td class="infobox-value">Glyph Stabilization, Iron-binding Arcs</td>
+                </tr>
+            </table>
+        </aside>
+
+    </div>
+<!-- Links to your master sidebar file -->
+    <script src="sidebar.js"></script>
+
+</body>
+</html>
