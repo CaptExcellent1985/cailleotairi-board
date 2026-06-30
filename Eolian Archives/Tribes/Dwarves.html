@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Eolian Archives - Compendium</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=IM+Fell+English:ital@0;1&display=swap');
+
+        body {
+            background-color: #080f0a;
+            background-image: radial-gradient(circle at 50% 0%, rgba(167, 139, 250, 0.04) 0%, transparent 70%),
+                              linear-gradient(to right, #050a06, #0c1710);
+            font-family: 'IM Fell English', serif;
+            color: #cbd5e1;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Top Mini-Nav to return to the Main Board */
+        .archive-header {
+            background: #0d1a11;
+            border-bottom: 2px solid #2d1e10;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .archive-title {
+            font-family: 'Cinzel', serif;
+            color: #6ee7b7;
+            margin: 0;
+            font-size: 1.4rem;
+            letter-spacing: 1px;
+            text-shadow: 0 0 8px rgba(110, 231, 183, 0.2);
+        }
+
+        .back-to-board {
+            color: #a78bfa;
+            text-decoration: none;
+            font-family: 'Cinzel', serif;
+            font-size: 0.85rem;
+            border: 1px solid #2d1e10;
+            padding: 6px 12px;
+            background: #111e15;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .back-to-board:hover {
+            color: #fcd34d;
+            border-color: #fcd34d;
+            background: #1b2e20;
+        }
+
+        /* Main Wiki Interface Layout */
+        .wiki-container {
+            display: grid;
+            grid-template-columns: 280px 1fr 300px;
+            gap: 25px;
+            max-width: 1600px;
+            width: 100%;
+            margin: 25px auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+            flex: 1;
+        }
+
+        /* 1. LEFT COLUMN: Lore Navigation Index */
+        .wiki-index {
+            background: #0d1a11;
+            border: 2px solid #2d1e10;
+            padding: 20px;
+            border-radius: 4px;
+            height: fit-content;
+            position: sticky;
+            top: 25px;
+        }
+
+        .index-category {
+            font-family: 'Cinzel', serif;
+            color: #a78bfa;
+            font-size: 0.95rem;
+            margin-top: 20px;
+            margin-bottom: 8px;
+            border-bottom: 1px solid #2d1e10;
+            padding-bottom: 4px;
+            letter-spacing: 1px;
+        }
+
+        .index-category:first-of-type { margin-top: 0; }
+
+        .wiki-index ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .wiki-index li { margin-bottom: 6px; }
+
+        .wiki-index a {
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: color 0.15s ease;
+            display: block;
+            padding: 2px 0;
+        }
+
+        .wiki-index a:hover, .wiki-index a.active {
+            color: #6ee7b7;
+            padding-left: 4px;
+            transition: all 0.15s ease;
+        }
+
+        /* 2. CENTER COLUMN: Main Lore Document */
+        .wiki-article {
+            background: #111e15;
+            border: 3px double #2d1e10;
+            padding: 35px;
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            line-height: 1.7;
+            font-size: 1.15rem;
+        }
+
+        .wiki-article h1 {
+            font-family: 'Cinzel', serif;
+            color: #f8fafc;
+            margin-top: 0;
+            font-size: 2.2rem;
+            border-bottom: 2px solid #3f614b;
+            padding-bottom: 10px;
+        }
+
+        .wiki-article p {
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+
+        .wiki-article blockquote {
+            background: rgba(147, 51, 234, 0.03);
+            border-left: 4px solid #a78bfa;
+            margin: 25px 0;
+            padding: 15px 20px;
+            font-style: italic;
+            color: #e2e8f0;
+        }
+
+        .wiki-article h2 {
+            font-family: 'Cinzel', serif;
+            color: #6ee7b7;
+            font-size: 1.4rem;
+            margin-top: 30px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 4px;
+        }
+
+        /* 3. RIGHT COLUMN: Tactical Lore Infobox */
+        .wiki-infobox {
+            background: #142118;
+            border: 4px solid #2d1e10;
+            border-radius: 4px;
+            padding: 15px;
+            height: fit-content;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+            position: sticky;
+            top: 25px;
+        }
+
+        .infobox-title {
+            font-family: 'Cinzel', serif;
+            text-align: center;
+            color: #fcd34d;
+            font-size: 1.1rem;
+            margin-top: 0;
+            margin-bottom: 12px;
+            border-bottom: 2px solid #2d1e10;
+            padding-bottom: 8px;
+        }
+
+        .infobox-image {
+            background: #09100b;
+            border: 1px solid #223c2a;
+            height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+		
+		.infobox-image img {
+			max-width: 100%;
+			max-height: 100%;
+			object-fit: contain;
+			padding: 10px; /* Optional: adds a nice border buffer for your art */
+}
+
+        .infobox-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+
+        .infobox-table td {
+            padding: 6px 4px;
+            vertical-align: top;
+        }
+
+        .infobox-label {
+            font-family: 'Cinzel', serif;
+            color: #a78bfa;
+            font-weight: bold;
+            width: 40%;
+        }
+
+        .infobox-value {
+            color: #e2e8f0;
+        }
+
+        .infobox-table tr:not(:last-child) {
+            border-bottom: 1px solid rgba(45, 30, 16, 0.5);
+        }
+
+        /* Responsive Layout Collapse */
+        @media (max-width: 1100px) {
+            .wiki-container {
+                grid-template-columns: 240px 1fr;
+            }
+            .wiki-infobox {
+                grid-column: span 2;
+                position: static;
+                width: 100%;
+                box-sizing: border-box;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .wiki-container {
+                grid-template-columns: 1fr;
+            }
+            .wiki-index, .wiki-infobox {
+                position: static;
+                grid-column: span 1;
+            }
+        }
+		/* 1. LEFT COLUMN: Lore Navigation Index (Updated for Accordions) */
+.wiki-index {
+    background: #0d1a11;
+    border: 2px solid #2d1e10;
+    padding: 15px;
+    border-radius: 4px;
+    height: fit-content;
+    position: sticky;
+    top: 25px;
+}
+
+/* Category Headers as Clickable Elements */
+.index-category {
+    font-family: 'Cinzel', serif;
+    color: #a78bfa;
+    font-size: 0.95rem;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    border-bottom: 1px solid #2d1e10;
+    padding: 8px 0;
+    letter-spacing: 1px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    user-select: none;
+    transition: color 0.2s ease;
+}
+
+.index-category:hover {
+    color: #6ee7b7;
+}
+
+/* Add a subtle indicator arrow */
+.index-category::after {
+    content: '▾';
+    font-size: 0.8rem;
+    transition: transform 0.2s ease;
+}
+
+/* Collapsible Menu List Content Wrapper */
+.index-menu-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 500px; /* Adjust if a category has massive amounts of links */
+    overflow: hidden;
+    transition: max-height 0.25s ease-out;
+}
+
+/* State changes for when a category is collapsed */
+.index-category.collapsed::after {
+    transform: rotate(-90deg);
+}
+
+.index-category.collapsed + .index-menu-list {
+    max-height: 0;
+}
+
+.wiki-index li { 
+    margin-bottom: 6px; 
+    padding-left: 5px;
+}
+
+.wiki-index a {
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.15s ease;
+    display: block;
+    padding: 2px 0;
+}
+
+.wiki-index a:hover, .wiki-index a.active {
+    color: #6ee7b7;
+    padding-left: 4px;
+    transition: all 0.15s ease;
+}
+    </style>
+</head>
+<body>
+
+    <!-- 🌐 ARCHIVE TOP NAVIGATION -->
+    <header class="archive-header">
+        <h1 class="archive-title">🏛️ THE EOLIAN GRAND ARCHIVES</h1>
+        <!-- Points back up to your main index file -->
+        <a href="index.html" class="back-to-board">🔙 Return to Command Board</a>
+    </header>
+
+    <!-- 🗃️ THREE COLUMN INTERFACE -->
+    <div class="wiki-container">
+
+<!-- 🧭 LEFT SIDE: Navigational Archive Index (Now Dynamic!) -->
+        <nav class="wiki-index" id="shared-sidebar">
+            <!-- JavaScript will inject the links here automatically -->
+        </nav>
+
+        <!-- 📜 CENTER: The Active Lore Document -->
+        <main class="wiki-article">
+            <header>
+            <h1>DWARVES</h1>
+            <p class="subtitle">The Artisans of Order &bull; Ceardlachd Forest</p>
+        </header>
+
+        <h2>📜 SUMMARY</h2>
+        <p>The stout and hardy Dwarves of Ceardlachd Forest are renowned craftsmen, with a strong work-ethic that makes them industrious when it comes to extracting the resources of the Tir. Steady on their feet, with a strong resistance to the many poisons that can be encountered across the land, they often can be found outside of their homeland serving as warriors or as Treasair's.</p>
+        <p>Created by the God of the Forge, Govannon, they work tirelessly to perfect their craft, whether that be simple wood-working, masonry, or working with the newly discovered wrought iron. It was the Dwarves who first developed advanced carpentry, which elevated Tuatha from tents to more permanent structures.</p>
+        <p>The Dwarves view themselves as the bulwark against the chaos of Caillech, specifically targeting Tieflings found defying their long-standing exile. It is Dwarven patrols who defend passes in the Cnoic Aran Mountains and frequently engage in skirmishes against Tiefling marauders. Along their southern and eastern borders, they have more recently had dealings with the Wood Elves, who see the Dwarven love of crafting as a perversion of nature.</p>
+
+        <h2>🌲 CULTURE & DIET</h2>
+        <p>Favouring earthy browns and deep greens in their clothing and artwork, Dwarven culture focuses on two primary elements—the connection between the land and the forge, and that of Order. Their music is deep and resonant, with lilting flutes serving to accent their songs. Myths and songs told by the Dwarves emphasize their mastery over nature and the chaos of the Anord, speaking of their great deeds in preventing the Tiefling from bringing the same doom that befell the Ancient Ones upon the Tuatha.</p>
+        <p>Dwarves rely on hardy and high-density meals that favour caloric intake over flavour. For them, food is fuel and any enjoyment of it is an added bonus more than something to be celebrated. Forest farming supplies the bulk of their nutrition, consisting of mosses, fungi, and nuts of the Ceardlachd Forest. Venison from the forest, and mutton from the Crag-Rams of the Cnoic Aran Mountains are provided by the hunters and trackers of the Clans.</p> 
+        <blockquote>
+            <strong>Dietary Insight: Stone Bannock & Gloom stews</strong><br>
+            The staple food of "Stone Bannock", a rock-hard loaf of ground acorns and chestnuts, can survive weeks in a hard pack and is often softened by gravy or other liquids before eating. Their strong natural constitution allows the Dwarves to use ingredients that could kill other Tuatha; meats are cured in the acrid smoke of toxic yew, while stews are spiced with stinging nettles and bioluminescent "Gloom-Caps" that offer a pleasant, tingling heat to a Dwarf but sickening toxicity to an outsider. These heavy meals are typically washed down with thick, fermented pine-sap liquor, providing a potent burst of sugar and alcohol to sustain them through long shifts.
+        </blockquote>
+
+        <h2>⚖️ SOCIAL STRUCTURE</h2>
+        <p>Traditionally, Dwarven society was built upon a foundation of collective stewardship and mutual obligation. Land was held by the Clan rather than the individual, entrusted to an elected Chieftain whose authority was conditional; if he failed to defend or manage the hold, he could be deposed by his kin. To forge unbreakable alliances, the Major Clans practiced a system of fosterage, sending their youth to be raised by other families to create deep bonds of loyalty across bloodlines. Justice was similarly communal, where a crime committed by one Dwarf became a debt owed by their entire clan. Economically, the Major Clans acted as patrons, leasing essential tools to the Lesser Clans in exchange for a portion of their production.</p>
+        <p>Dwarven names are indicative of their place within the social structure:</p>
+        <ul>
+            <li><strong>The Gaisce Clans <span class="pronunciation">(Gosh-ka)</span>:</strong> Reserved for heroes and great leaders. A deed or physical trait replaces their family name and is inherited by descendants.</li>
+            <li><strong>Major Clans:</strong> Historic lineages (such as <em>Clan Ceardaigh</em>) that hold land rights, control major elements of the economy, and lend their names to settlements.</li>
+            <li><strong>Faoi Clans <span class="pronunciation">(fwee)</span>:</strong> Subservient lineages whose surnames reflect their patron major clan. A Dwarf from Clan Drealach living under Ceardaigh would bear the surname <em>Drealach-faoi-Ceardaigh</em>.</li>
+        </ul>
+
+        <h2>🔨 CUSTOMS & RITES</h2>
+        <h3>The Shift in Commensality</h3>
+        <p>Meals are communal affairs for the Dwarves. Traditionally, they were served in mess halls provided by the Gaisce Clans as a necessary reprieve from toil, strengthening bonds between clans. Recently, many of these halls have been replaced by industrial canteens run by the Ord Directorate, where meals are taken in silence and food quality is strictly tied to labor output.</p>
+
+        <h3>The Root Grip</h3>
+        <p>A traditional greeting where Dwarves clasp forearms together and squeeze firmly, symbolizing roots tangling to lend mutual strength. Under the current Ord Directorate, this custom has devolved into a literal test of strength to see if one party falters.</p>
+
+        <h3>An Snoi-Fior <span class="pronunciation">(An Snee-Feer)</span></h3>
+        <p>A rite of passage on a Dwarf's 13th birthday. The youth must venture into the forest alone, find a fallen bough, and carve a fully functional mechanism from it (such as a musical instrument or a lock) to demonstrate mastery of both survival and advanced carpentry.</p>
+
+        <h3>The Heart Joint</h3>
+        <p>Betrothed couples independently carve matching halves of a wooden token. When slid together, if the pieces join perfectly with no visible gaps or seams, the union is considered blessed by Govannon. The wood type is selected based on its specific symbolic qualities.</p>
+
+        <h2>🌌 PANTHEON</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Domains</th>
+                    <th>Alignment</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="color: #6ee7b7; font-weight: bold;">Govannon</td>
+                    <td>Crafting, Order</td>
+                    <td>Neutral</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>🪙 ECONOMICS & AITE-BRIETHE TRADE</h2>
+        <p>The primary export for the Dwarves lies in high-quality masterworks of wood and stone. With the discovery of iron, their economy is shifting rapidly toward iron implements, weapons, and armors now seen spreading across the Tir. They import raw peat iron from the Lizard-folk through trade routes in the <em>Mosslight Murmur</em> and maintain an alliance with the <em>Cogswyr Syndicate</em> to supply refined iron for gnomish gadgets.</p>
+        <p>Dwarven carpenters and masons frequently travel the Tir, commanding high prices for erecting sturdy wooden homes, stone structures, and grand monuments. They are especially common within the hub of <strong>Aite-Briethe</strong>.</p>
+
+        <h2>⏳ HISTORICAL CHRONICLES</h2>
+        
+        <div class="timeline-item">
+            <span class="timeline-era">Early History — 100 to 350 ATE</span>
+            <p>As the Sundering Plague ravaged Aite-Briethe, a group of Tuatha struck out westward into the Ceardlachd Forest and Cnoic Aran Mountains, establishing the founding Major Clans. Clan Ceardaigh built the city of Ceardaigh and attempted to forcefully eliminate the Anord by imposing strict order on neighbors. Resisted by Wood Elves and Tieflings, the Dwarves allied with Gnomes but lost the war when the Tieflings unleashed the devastating <strong>Rimeblast</strong>, destroying Ceardaigh's original foundations. The Dwarves resolved that Order must be <em>crafted</em>, not imposed.</p>
+        </div>
+
+        <div class="timeline-item">
+            <span class="timeline-era">The Exile of Caillech's Disciples & Govannon's Fury</span>
+            <p>Blaming the Tieflings for the ongoing chaos of the Anord, Dwarven devotees branded them the duplicitous children of the dark goddess Caillech. When Tiefling resistance struck back against Dwarven patrols, the clans forged a pact with Govannon. In exchange for an oath to eternally value Order and the Forge, Govannon gifted them instructions for a magical weapon: <strong>Govannon's Fury</strong>. The weapon decimated the stronghold at Caillech's Foot, resulting in the permanent exile of Tieflings into the inhospitable Cnoic Aran peaks.</p>
+        </div>
+
+        <div class="timeline-item">
+            <span class="timeline-era">The Thread-Breakers War — 1050s ATE</span>
+            <p>The Dwarves were hit on two fronts: Wood Elf warbands from the south-east and Tiefling marauders from the north-west. Allied with the Gnomes of the Cogswyr Syndicate, the Dwarves were kept completely in the dark regarding the dangerous knot-making replication that triggered the <em>Rune-Breach Folly</em>. Relying heavily on Cailleotairi reinforcements, the Dwarven delegation was instrumental during the Weave-Mother's Peace in establishing the Cailleotairi as the permanent peacekeepers of the Tir.</p>
+        </div>
+
+        <div class="timeline-item">
+            <span class="timeline-era">Discovery of Iron & The War of the Severed Root</span>
+            <p>Recognizing the value of peat iron discovered by the Lizard-folk, Dwarves pioneered iron forging, opening massive trade routes through the Fossmore Forest. Alarmed by logging expansions and viewing iron as a cancer that destroyed the Ancient Ones, Wood Elf warbands began guerrilla strikes. Following the total slaughter of a logging camp in 1568, full war erupted. Led by Torin Iron-Heart, the Dwarves fought fiercely but were outmaneuvered by guerrilla tactics. Wood Elf spies baited the defense away from the trading hub of <strong>Tre Coedwig</strong>, capturing it and forcing the Dwarves to sign the humiliating <em>Treaty of Green Ash</em>.</p>
+        </div>
+
+        <div class="timeline-item">
+            <span class="timeline-era">Rise of the Ord Directorate — Recent Era</span>
+            <p>In the wake of the Treaty of Green Ash, trade restrictions plunged the Dwarven people into famine and poverty. Capitalizing on growing resentment toward the Silk Matrons' unfair trade rulings and the perceived "fake neutrality" of the Cailleotairi during the war, veteran commander <strong>Torin Iron-Heart</strong> rallied the Faoi clans. Following the Rogue Scholar's Crisis, Torin led an armed coup in Ceardaigh, executing the ruling clan leaders. Replacing them with loyalists, he dissolved the old framework, declaring the foundation of the iron-fisted <strong>Ord Directorate</strong> and establishing himself as the supreme <strong>Ord-Ri</strong>.</p>
+        </div>
+		</main>
+
+        <!-- 📊 RIGHT SIDE: Quick-Reference Dossier Data -->
+<!-- 📊 RIGHT SIDE: Quick-Reference Dossier Data -->
+<aside class="wiki-infobox">
+    <h3 class="infobox-title">Lineage Dossier</h3>
+    <div class="infobox-image"><img src="../../images/dwarves.png"></div>
+    
+    <table class="infobox-table">
+        <tr>
+            <td class="infobox-label">Designation</td>
+            <td class="infobox-value">Dwarves</td>
+        </tr>
+        <tr>
+            <td class="infobox-label">Diplomatic Status</td>
+            <td class="infobox-value" style="color: #cbd5e1; font-weight: bold;">Faltering)</td>
+        </tr>
+        <tr>
+            <td class="infobox-label">Primary Territory</td>
+            <td class="infobox-value">Ceardlachd Forest</td>
+		</tr>
+		<tr>
+			<td class="infobox-label">Capital</td>
+			<td class="infobox-value">Ceardaigh</td>
+        </tr>
+        <tr>
+            <td class="infobox-label">Leading Faction</td>
+            <td class="infobox-value">Ord Directorate</td>
+        </tr>
+		<tr>
+			<td class="infobox-label">Current Leader</td>
+			<td class="infobox-value">Torin Iron-Heart</td>
+        <tr>
+            <td class="infobox-label">Economics</td>
+            <td class="infobox-value" style="color: #fca5a5;">Craftsmanship / Carpentry / Lumber / Iron-forging (new)</td>
+        </tr>
+    </table>
+</aside>
+
+    </div>
+<!-- Links to your master sidebar file -->
+    <script src="../../sidebar.js"></script>
+
+</body>
+</html>

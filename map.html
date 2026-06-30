@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Eolian Archives - Compendium</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=IM+Fell+English:ital@0;1&display=swap');
+
+        body {
+            background-color: #080f0a;
+            background-image: radial-gradient(circle at 50% 0%, rgba(167, 139, 250, 0.04) 0%, transparent 70%),
+                              linear-gradient(to right, #050a06, #0c1710);
+            font-family: 'IM Fell English', serif;
+            color: #cbd5e1;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Top Mini-Nav to return to the Main Board */
+        .archive-header {
+            background: #0d1a11;
+            border-bottom: 2px solid #2d1e10;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .archive-title {
+            font-family: 'Cinzel', serif;
+            color: #6ee7b7;
+            margin: 0;
+            font-size: 1.4rem;
+            letter-spacing: 1px;
+            text-shadow: 0 0 8px rgba(110, 231, 183, 0.2);
+        }
+
+        .back-to-board {
+            color: #a78bfa;
+            text-decoration: none;
+            font-family: 'Cinzel', serif;
+            font-size: 0.85rem;
+            border: 1px solid #2d1e10;
+            padding: 6px 12px;
+            background: #111e15;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .back-to-board:hover {
+            color: #fcd34d;
+            border-color: #fcd34d;
+            background: #1b2e20;
+        }
+
+        /* Main Wiki Interface Layout */
+        .wiki-container {
+            display: grid;
+            grid-template-columns: 280px 1fr 300px;
+            gap: 25px;
+            max-width: 1600px;
+            width: 100%;
+            margin: 25px auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+            flex: 1;
+        }
+
+        /* 1. LEFT COLUMN: Lore Navigation Index */
+        .wiki-index {
+            background: #0d1a11;
+            border: 2px solid #2d1e10;
+            padding: 20px;
+            border-radius: 4px;
+            height: fit-content;
+            position: sticky;
+            top: 25px;
+        }
+
+        .index-category {
+            font-family: 'Cinzel', serif;
+            color: #a78bfa;
+            font-size: 0.95rem;
+            margin-top: 20px;
+            margin-bottom: 8px;
+            border-bottom: 1px solid #2d1e10;
+            padding-bottom: 4px;
+            letter-spacing: 1px;
+        }
+
+        .index-category:first-of-type { margin-top: 0; }
+
+        .wiki-index ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .wiki-index li { margin-bottom: 6px; }
+
+        .wiki-index a {
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: color 0.15s ease;
+            display: block;
+            padding: 2px 0;
+        }
+
+        .wiki-index a:hover, .wiki-index a.active {
+            color: #6ee7b7;
+            padding-left: 4px;
+            transition: all 0.15s ease;
+        }
+
+        /* 2. CENTER COLUMN: Main Lore Document */
+        .wiki-article {
+            background: #111e15;
+            border: 3px double #2d1e10;
+            padding: 35px;
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            line-height: 1.7;
+            font-size: 1.15rem;
+        }
+
+        .wiki-article h1 {
+            font-family: 'Cinzel', serif;
+            color: #f8fafc;
+            margin-top: 0;
+            font-size: 2.2rem;
+            border-bottom: 2px solid #3f614b;
+            padding-bottom: 10px;
+        }
+
+        .wiki-article p {
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+
+        .wiki-article blockquote {
+            background: rgba(147, 51, 234, 0.03);
+            border-left: 4px solid #a78bfa;
+            margin: 25px 0;
+            padding: 15px 20px;
+            font-style: italic;
+            color: #e2e8f0;
+        }
+
+        .wiki-article h2 {
+            font-family: 'Cinzel', serif;
+            color: #6ee7b7;
+            font-size: 1.4rem;
+            margin-top: 30px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 4px;
+        }
+
+        /* 3. RIGHT COLUMN: Tactical Lore Infobox */
+        .wiki-infobox {
+            background: #142118;
+            border: 4px solid #2d1e10;
+            border-radius: 4px;
+            padding: 15px;
+            height: fit-content;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+            position: sticky;
+            top: 25px;
+        }
+
+        .infobox-title {
+            font-family: 'Cinzel', serif;
+            text-align: center;
+            color: #fcd34d;
+            font-size: 1.1rem;
+            margin-top: 0;
+            margin-bottom: 12px;
+            border-bottom: 2px solid #2d1e10;
+            padding-bottom: 8px;
+        }
+
+        .infobox-image {
+            background: #09100b;
+            border: 1px solid #223c2a;
+            height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+
+        .infobox-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+
+        .infobox-table td {
+            padding: 6px 4px;
+            vertical-align: top;
+        }
+
+        .infobox-label {
+            font-family: 'Cinzel', serif;
+            color: #a78bfa;
+            font-weight: bold;
+            width: 40%;
+        }
+
+        .infobox-value {
+            color: #e2e8f0;
+        }
+
+        .infobox-table tr:not(:last-child) {
+            border-bottom: 1px solid rgba(45, 30, 16, 0.5);
+        }
+
+        /* Responsive Layout Collapse */
+        @media (max-width: 1100px) {
+            .wiki-container {
+                grid-template-columns: 240px 1fr;
+            }
+            .wiki-infobox {
+                grid-column: span 2;
+                position: static;
+                width: 100%;
+                box-sizing: border-box;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .wiki-container {
+                grid-template-columns: 1fr;
+            }
+            .wiki-index, .wiki-infobox {
+                position: static;
+                grid-column: span 1;
+            }
+        }
+		/* 1. LEFT COLUMN: Lore Navigation Index (Updated for Accordions) */
+.wiki-index {
+    background: #0d1a11;
+    border: 2px solid #2d1e10;
+    padding: 15px;
+    border-radius: 4px;
+    height: fit-content;
+    position: sticky;
+    top: 25px;
+}
+
+/* Category Headers as Clickable Elements */
+.index-category {
+    font-family: 'Cinzel', serif;
+    color: #a78bfa;
+    font-size: 0.95rem;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    border-bottom: 1px solid #2d1e10;
+    padding: 8px 0;
+    letter-spacing: 1px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    user-select: none;
+    transition: color 0.2s ease;
+}
+
+.index-category:hover {
+    color: #6ee7b7;
+}
+
+/* Add a subtle indicator arrow */
+.index-category::after {
+    content: '▾';
+    font-size: 0.8rem;
+    transition: transform 0.2s ease;
+}
+
+/* Collapsible Menu List Content Wrapper */
+.index-menu-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 500px; /* Adjust if a category has massive amounts of links */
+    overflow: hidden;
+    transition: max-height 0.25s ease-out;
+}
+
+/* State changes for when a category is collapsed */
+.index-category.collapsed::after {
+    transform: rotate(-90deg);
+}
+
+.index-category.collapsed + .index-menu-list {
+    max-height: 0;
+}
+
+.wiki-index li { 
+    margin-bottom: 6px; 
+    padding-left: 5px;
+}
+
+.wiki-index a {
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.15s ease;
+    display: block;
+    padding: 2px 0;
+}
+
+.wiki-index a:hover, .wiki-index a.active {
+    color: #6ee7b7;
+    padding-left: 4px;
+    transition: all 0.15s ease;
+}
+
+/* 🗺️ MAP INTERFACE WRAPPER */
+.map-interface {
+    background: #111e15;
+    border: 3px solid #2d1e10;
+    padding: 20px;
+    border-radius: 4px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+    text-align: center;
+	max-width: 800px;      /* Caps the width of the map box (Adjust this number) */
+    margin: 0 auto;
+}
+
+.map-header {
+    font-family: 'Cinzel', serif;
+    color: #fcd34d;
+    margin-top: 0;
+    margin-bottom: 5px;
+    letter-spacing: 2px;
+}
+
+.map-location-title {
+    font-family: 'Cinzel', serif;
+    color: #6ee7b7;
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* 🖼️ VIEWPORT CLIPPING */
+.map-viewport {
+    position: relative;
+    width: 100%;
+    border: 1px solid #223c2a;
+    border-radius: 4px;
+    background: #09100b;
+    margin-bottom: 20px;
+}
+
+.map-viewport img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 2px;
+}
+
+/* 📍 HOTSPOT VECTORS */
+.map-hotspot {
+    position: absolute;
+    border: 2px dashed rgba(252, 211, 77, 0.4);
+    background: rgba(252, 211, 77, 0.05);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.map-hotspot:hover {
+    border-color: #6ee7b7;
+    background: rgba(110, 231, 183, 0.15);
+}
+
+.hotspot-label {
+    font-family: 'Cinzel', serif;
+    color: #fcd34d;
+    font-size: 0.9rem;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px #000, -2px -2px 4px #000;
+    pointer-events: none;
+    letter-spacing: 1px;
+}
+
+/* INTERFACE CONTROLS */
+.map-controls {
+    display: flex;
+    justify-content: center;
+}
+
+.map-btn {
+    font-family: 'Cinzel', serif;
+    background: #1c2621;
+    border: 1px solid #3f614b;
+    color: #6ee7b7;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.map-btn:hover {
+    background: #223c2a;
+    color: #fcd34d;
+    border-color: #6ee7b7;
+}
+
+.hidden {
+    display: none !important;
+}
+
+    </style>
+</head>
+<body>
+
+    <!-- 🌐 ARCHIVE TOP NAVIGATION -->
+    <header class="archive-header">
+        <h1 class="archive-title">🏛️ THE EOLIAN GRAND ARCHIVES</h1>
+        <!-- Points back up to your main index file -->
+        <a href="index.html" class="back-to-board">🔙 Return to Command Board</a>
+    </header>
+
+    <!-- 🗃️ THREE COLUMN INTERFACE -->
+    <div class="wiki-container" style="grid-template-columns: 280px 1fr;">
+
+<!-- 🧭 LEFT SIDE: Navigational Archive Index (Now Dynamic!) -->
+        <nav class="wiki-index" id="shared-sidebar">
+            <!-- JavaScript will inject the links here automatically -->
+        </nav>
+<!-- CENTER ATLAS VIEW: MAP -->
+        <main class="archive-sheet" style="padding: 0; background: transparent; border: none; box-shadow: none; width: 100%;">
+        <div class="map-interface">
+            <h2 class="map-header">Cartography of the Tir</h2>
+            <div class="map-location-title" id="location-display">Grand View</div>
+
+            <div class="map-viewport">
+                <img src="images/atlas/TirNaBeatha.png" id="active-map" alt="Campaign Map">
+
+            <div class="map-hotspot regional-marker" style="top: 31%; left: 15%; width: 29%; height: 16%;" 
+                 onclick="loadRegionalMap('../../images/ceardlachd_forest.png', 'Ceardlachd Forest')">
+                <span class="hotspot-label"></span>
+            </div>
+
+            <div class="map-hotspot regional-marker" style="top: 58%; left: 43%; width: 13%; height: 22%;" 
+                 onclick="loadRegionalMap('../../images/fossmore.png', 'Fossmore Borderlands')">
+                <span class="hotspot-label">Fossmore Borderlands</span>
+            </div>
+			
+			<div class="map-hotspot regional-marker" style="top: 46%; left: 76%; width: 10%; height: 26%;" 
+                 onclick="loadRegionalMap('images/atlas/WellandrymVale.png', 'Wellandrym Vale')">
+                <span class="hotspot-label">Wellandrym Vale</span>
+            </div>
+			
+            </div>
+
+            <div class="map-controls">
+                <button class="map-btn" onclick="resetToWorldMap()">Return to World Map</button>
+            </div>
+        </div>
+    </main>
+
+</div>
+
+<script src="sidebar.js"></script>
+<script>
+    // 🔮 ATLAS ENGINE SCRIPT BLOCK
+    const activeMap = document.getElementById('active-map');
+    const locationDisplay = document.getElementById('location-display');
+    const markers = document.querySelectorAll('.regional-marker');
+    const worldMapPath = 'images/atlas/TirNaBeatha.png';
+
+    function loadRegionalMap(imagePath, regionName) {
+        activeMap.src = imagePath;
+        locationDisplay.textContent = `Region: ${regionName}`;
+        markers.forEach(marker => marker.classList.add('hidden'));
+    }
+
+    function resetToWorldMap() {
+        activeMap.src = worldMapPath;
+        locationDisplay.textContent = "Grand View";
+        markers.forEach(marker => marker.classList.remove('hidden'));
+    }
+</script>
+
+    </div>
+<!-- Links to your master sidebar file -->
+    <script src="sidebar.js"></script>
+
+</body>
+</html>
