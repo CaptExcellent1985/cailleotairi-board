@@ -8,13 +8,14 @@ document.addEventListener("DOMContentLoaded", function() {
 	
 		<div class="index-category collapsed" onClick="toggleIndexCategory(this)">Cartography</div>
 		<ul class="index-menu-list">
-			<li><a href="../../map.html" id="link-Cartography-Tir">The Tir</a></li>
+			<li><a href="map.html" id="link-Cartography-Tir">The Tir</a></li>
+			<li><a href="CeardlachdForest.html" id="Link-Cartography-Tir">Ceardlachd Forest</li>
+			<li><a href="WellandrymVale.html" id="link-Cartography-Tir">Wellandrym Vale</a></li>
 		</ul>
-		</div>
 	
         <div class="index-category collapsed" onclick="toggleIndexCategory(this)">The Tuatha</div>
         <ul class="index-menu-list">
-            <li><a href="Eolian Archives/Tribes/Dwarves.html" id="link-tribes-dwarves">⚒️Dwarves</a></li>
+            <li><a href="Dwarves.html" id="link-tribes-dwarves">⚒️Dwarves</a></li>
             <li><a href="" id="link-tribes-Eladrin">🎭 Eladrin</a></li>
             <li><a href="" id="link-tribes-Feyfolk">✨ Feyfolk</a></li>
 			<li><a href="" id="link-tribes-Firbolg">🌲 Firbolg </a></li>

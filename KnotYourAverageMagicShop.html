@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Eolian Archives - Compendium</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=IM+Fell+English:ital@0;1&display=swap');
+
+        body {
+            background-color: #080f0a;
+            background-image: radial-gradient(circle at 50% 0%, rgba(167, 139, 250, 0.04) 0%, transparent 70%),
+                              linear-gradient(to right, #050a06, #0c1710);
+            font-family: 'IM Fell English', serif;
+            color: #cbd5e1;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Top Mini-Nav to return to the Main Board */
+        .archive-header {
+            background: #0d1a11;
+            border-bottom: 2px solid #2d1e10;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .archive-title {
+            font-family: 'Cinzel', serif;
+            color: #6ee7b7;
+            margin: 0;
+            font-size: 1.4rem;
+            letter-spacing: 1px;
+            text-shadow: 0 0 8px rgba(110, 231, 183, 0.2);
+        }
+
+        .back-to-board {
+            color: #a78bfa;
+            text-decoration: none;
+            font-family: 'Cinzel', serif;
+            font-size: 0.85rem;
+            border: 1px solid #2d1e10;
+            padding: 6px 12px;
+            background: #111e15;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .back-to-board:hover {
+            color: #fcd34d;
+            border-color: #fcd34d;
+            background: #1b2e20;
+        }
+
+        /* Main Wiki Interface Layout */
+        .wiki-container {
+            display: grid;
+            grid-template-columns: 280px 1fr 300px;
+            gap: 25px;
+            max-width: 1600px;
+            width: 100%;
+            margin: 25px auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+            flex: 1;
+        }
+
+        /* 1. LEFT COLUMN: Lore Navigation Index */
+        .wiki-index {
+            background: #0d1a11;
+            border: 2px solid #2d1e10;
+            padding: 15px;
+            border-radius: 4px;
+            height: fit-content;
+            position: sticky;
+            top: 25px;
+        }
+
+        .index-category {
+            font-family: 'Cinzel', serif;
+            color: #a78bfa;
+            font-size: 0.95rem;
+            margin-top: 10px;
+            margin-bottom: 5px;
+            border-bottom: 1px solid #2d1e10;
+            padding: 8px 0;
+            letter-spacing: 1px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+            transition: color 0.2s ease;
+        }
+
+        .index-category:hover { color: #6ee7b7; }
+        .index-category::after { content: '▾'; font-size: 0.8rem; transition: transform 0.2s ease; }
+        .index-menu-list { list-style: none; padding: 0; margin: 0; max-height: 500px; overflow: hidden; transition: max-height 0.25s ease-out; }
+        .index-category.collapsed::after { transform: rotate(-90deg); }
+        .index-category.collapsed + .index-menu-list { max-height: 0; }
+        .wiki-index li { margin-bottom: 6px; padding-left: 5px; }
+        
+        .wiki-index a {
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: color 0.15s ease;
+            display: block;
+            padding: 2px 0;
+        }
+
+        .wiki-index a:hover, .wiki-index a.active {
+            color: #6ee7b7;
+            padding-left: 4px;
+            transition: all 0.15s ease;
+        }
+
+        /* 2. CENTER COLUMN: Main Lore Document */
+        .wiki-article {
+            background: #111e15;
+            border: 3px double #2d1e10;
+            padding: 35px;
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            line-height: 1.7;
+            font-size: 1.15rem;
+        }
+
+        .wiki-article h1 {
+            font-family: 'Cinzel', serif;
+            color: #f8fafc;
+            margin-top: 0;
+            font-size: 2.2rem;
+            border-bottom: 2px solid #3f614b;
+            padding-bottom: 10px;
+        }
+
+        .wiki-article p {
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+
+        /* 👑 STYLIZED DOSSIER BLOCKQUOTE TABLE */
+        .wiki-article blockquote {
+            background: #142118;
+            border: 1px solid #2d1e10;
+            border-left: 5px solid #a78bfa;
+            margin: 30px 0;
+            padding: 20px;
+            font-style: normal;
+            border-radius: 4px;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.4);
+        }
+
+        .blockquote-title {
+            font-family: 'Cinzel', serif;
+            color: #fcd34d;
+            font-size: 1.2rem;
+            margin-top: 0;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #2d1e10;
+            padding-bottom: 6px;
+            letter-spacing: 1px;
+        }
+
+        .merchant-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 1.05rem;
+        }
+
+        .merchant-table th {
+            font-family: 'Cinzel', serif;
+            color: #a78bfa;
+            text-align: left;
+            padding: 8px;
+            border-bottom: 2px solid #2d1e10;
+        }
+
+        .merchant-table td {
+            padding: 10px 8px;
+            vertical-align: middle;
+            color: #e2e8f0;
+        }
+
+        .merchant-table tr:not(:last-child) {
+            border-bottom: 1px solid rgba(63, 97, 75, 0.3);
+        }
+
+        /* 🔮 DYNAMIC POP-UP HOVER ELEMENT HOOKS */
+        .hover-lookup {
+            color: #6ee7b7;
+            border-bottom: 1px dashed #6ee7b7;
+            cursor: help;
+            position: relative;
+            font-weight: bold;
+            transition: color 0.15s;
+        }
+
+        .hover-lookup:hover {
+            color: #fcd34d;
+            border-bottom-color: #fcd34d;
+        }
+
+		/* 🔮 GLOBAL FLOATING TOOLTIP ELEMENT */
+		#global-item-tooltip {
+		position: fixed; /* Bypasses all table boundaries entirely */
+		top: 0;
+		left: 0;
+		width: 280px;
+		background: #0d1a11;
+		border: 2px solid #2d1e10;
+		padding: 12px;
+		border-radius: 4px;
+		box-shadow: 0 10px 25px rgba(0,0,0,0.9);
+		z-index: 9999; /* Forces window to sit on top of everything else */
+		pointer-events: none; /* Prevents cursor stuttering */
+		opacity: 0;
+		visibility: hidden;
+		transition: opacity 0.15s ease;
+		font-family: 'IM Fell English', serif;
+		font-style: normal;
+		line-height: 1.4;
+		}
+
+		.tooltip-name {
+		font-family: 'Cinzel', serif;
+		color: #fcd34d;
+		font-size: 0.95rem;
+		margin-bottom: 4px;
+		display: block;
+		border-bottom: 1px solid #3f614b;
+		padding-bottom: 2px;
+		}
+
+.tooltip-desc {
+    color: #cbd5e1;
+    font-size: 0.9rem;
+    display: block;
+}
+
+/* Ensure the pop-up box allows blocks to show up cleanly */
+.tooltip-image {
+    width: 100%;
+    height: 120px;
+    background: #09100b;
+    border: 1px solid #223c2a;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    display: flex; /* Centers the art assets */
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.tooltip-image img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    padding: 6px;
+    display: block; /* Overrides default browser inline layout limits */
+}
+
+/* Base lookup style */
+.hover-lookup {
+    color: #6ee7b7;
+    border-bottom: 1px dashed #6ee7b7;
+    cursor: help;
+    font-weight: bold;
+    transition: color 0.15s;
+}
+
+.hover-lookup:hover {
+    color: #fcd34d;
+    border-bottom-color: #fcd34d;
+}
+
+        .tooltip-name {
+            font-family: 'Cinzel', serif;
+            color: #fcd34d;
+            font-size: 0.95rem;
+            margin-bottom: 4px;
+            display: block;
+            border-bottom: 1px solid #3f614b;
+            padding-bottom: 2px;
+        }
+
+        .tooltip-desc {
+            color: #cbd5e1;
+            font-size: 0.9rem;
+            display: block;
+        }
+
+        .wiki-article h2 {
+            font-family: 'Cinzel', serif;
+            color: #6ee7b7;
+            font-size: 1.4rem;
+            margin-top: 30px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 4px;
+        }
+
+        /* 3. RIGHT COLUMN: Tactical Lore Infobox */
+        .wiki-infobox {
+            background: #142118;
+            border: 4px solid #2d1e10;
+            border-radius: 4px;
+            padding: 15px;
+            height: fit-content;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+            position: sticky;
+            top: 25px;
+        }
+
+        .infobox-title {
+            font-family: 'Cinzel', serif;
+            text-align: center;
+            color: #fcd34d;
+            font-size: 1.1rem;
+            margin-top: 0;
+            margin-bottom: 12px;
+            border-bottom: 2px solid #2d1e10;
+            padding-bottom: 8px;
+        }
+
+        .infobox-image {
+            background: #09100b;
+            border: 1px solid #223c2a;
+            height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+        
+        .infobox-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            padding: 10px;
+        }
+        
+        .infobox-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+
+        .infobox-table td {
+            padding: 6px 4px;
+            vertical-align: top;
+        }
+
+        .infobox-label {
+            font-family: 'Cinzel', serif;
+            color: #a78bfa;
+            font-weight: bold;
+            width: 40%;
+        }
+
+        .infobox-value { color: #e2e8f0; }
+        .infobox-value a { color: #94a3b8; text-decoration: none; font-size: 1rem; transition: color 0.15s ease; display: block; padding: 2px 0; }
+        .infobox-value a:hover, .infobox-value a.active { color: #6ee7b7; padding-left: 4px; transition: all 0.15s ease; }
+        .infobox-table tr:not(:last-child) { border-bottom: 1px solid rgba(45, 30, 16, 0.5); }
+
+        /* Responsive Layout Collapse */
+        @media (max-width: 1100px) {
+            .wiki-container { grid-template-columns: 240px 1fr; }
+            .wiki-infobox { grid-column: span 2; position: static; width: 100%; box-sizing: border-box; }
+        }
+
+        @media (max-width: 768px) {
+            .wiki-container { grid-template-columns: 1fr; }
+            .wiki-index, .wiki-infobox { position: static; grid-column: span 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="archive-header">
+        <h1 class="archive-title">🏛️ THE EOLIAN GRAND ARCHIVES</h1>
+        <a href="index.html" class="back-to-board">🔙 Return to Command Board</a>
+    </header>
+
+    <div class="wiki-container">
+
+        <nav class="wiki-index" id="shared-sidebar">
+            </nav>
+
+        <main class="wiki-article">
+            <header>
+                <h1>Knot Your Average Magic Shop</h1>
+            </header>
+
+            <h2>📜 Summary </h2>
+            <p>From the outside, this shop seems un-assuming, almost quaint. Located in the center square of Tre Coedwig, it's single story is carved and planed of the finest of ironwood logged in the heart of the Ceardlachd Forest.</p>
+            <p>Inside, however, patrons are greeted by the heavy scent of various chemical varnishes and polishes. The gnomish proprietor Twig Tinkerer is often hard at work at some new magical gadget, rarely taking notice of paying customers. An inventory of his wares reveals that all are meant to serve the local woodsmen and lumberjacks.</p>
+            
+            <blockquote>
+                <div class="blockquote-title">Goods and Services</div>
+                <table class="merchant-table">
+                    <thead>
+                        <tr>
+                            <th>Item / Service</th>
+                            <th>Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <span class="hover-lookup" data-item-id="everlasting-oil-can">Everlasting Oil Can</span>
+                            </td>
+                            <td>400 Square Knots</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="hover-lookup" data-item-id="talking-timber-tongs">Talking Timber Tongs</span>
+                            </td>
+                            <td>250 Square Knots</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </blockquote>
+        </main>
+
+        <aside class="wiki-infobox">
+            <h3 class="infobox-title">Settlement Dossier</h3>
+            <div class="infobox-image"><img src="images/KnotInt.jpg"></div>
+            
+            <table class="infobox-table">
+                <tr>
+                    <td class="infobox-label">Pronunciation</td>
+                    <td class="infobox-value">Treh koyth-wig</td>
+                </tr>
+                <tr>
+                    <td class="infobox-label">Classification</td>
+                    <td class="infobox-value">Trading City</td>
+                </tr>
+                <tr>
+                    <td class="infobox-label">Population</td>
+                    <td class="infobox-value">600-700</td>
+                </tr>
+                <tr>
+                    <td class="infobox-label">Factions</td>
+                    <td class="infobox-value">Traditionalists</td>
+                </tr>
+                <tr>
+                    <td class="infobox-label">Noteworthy Locales</td>
+                    <td class="infobox-value">
+                        <a href="knotyouraveragemagicshop.html" class="active">Knot Your Average Magic Shop</a>
+                        <a href="theoakandacorn.html">The Oak And Acorn</a>
+                    </td>
+                </tr>
+            </table>
+        </aside>
+
+    </div>
+
+<script src="items-data.js"></script>
+<script src="sidebar.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    if (typeof ITEM_DATABASE === 'undefined') return;
+
+    let tooltip = document.getElementById('global-item-tooltip');
+    if (!tooltip) {
+        tooltip = document.createElement('div');
+        tooltip.id = 'global-item-tooltip';
+        document.body.appendChild(tooltip);
+    }
+
+    const targets = document.querySelectorAll('.hover-lookup');
+
+    targets.forEach(target => {
+        target.addEventListener('mouseenter', function(e) {
+            const itemId = this.getAttribute('data-item-id');
+            const itemData = ITEM_DATABASE[itemId];
+
+            if (itemData) {
+                // 🖼️ Conditional Image Logic: Render image slot only if a path is provided
+                let imageHtml = '';
+                if (itemData.image && itemData.image !== "") {
+                    imageHtml = `<div class="tooltip-image"><img src="${itemData.image}" alt="${itemData.name}"></div>`;
+                }
+
+                tooltip.innerHTML = `
+                    ${imageHtml}
+                    <strong class="tooltip-name">${itemData.name}</strong>
+                    <span class="tooltip-desc">${itemData.description}</span>
+                `;
+                
+                tooltip.style.opacity = '1';
+                tooltip.style.visibility = 'visible';
+            }
+        });
+
+        target.addEventListener('mousemove', function(e) {
+            const offsetLeft = 15;
+            let offsetTop = 20; // Default: show slightly below cursor position
+
+            // 📏 SCREEN EDGE BOUNDARY CALCULATION
+            const tooltipHeight = tooltip.offsetHeight;
+            const windowHeight = window.innerHeight;
+
+            // If the popup box spans past the bottom edge of the display, flip it above the cursor
+            if (e.clientY + tooltipHeight + offsetTop > windowHeight) {
+                offsetTop = -tooltipHeight - 15; 
+            }
+
+            tooltip.style.left = (e.clientX + offsetLeft) + 'px';
+            tooltip.style.top = (e.clientY + offsetTop) + 'px';
+        });
+
+        target.addEventListener('mouseleave', function() {
+            tooltip.style.opacity = '0';
+            tooltip.style.visibility = 'hidden';
+        });
+    });
+});
+</script>
+</body>
+</html>

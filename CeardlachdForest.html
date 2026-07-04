@@ -224,6 +224,21 @@
             color: #e2e8f0;
         }
 
+		.infobox-value a {
+			color: #94a3b8;
+			text-decoration: none;
+			font-size: 1rem;
+			transition: color 0.15s ease;
+			display: block;
+			padding: 2px 0;
+		}
+		
+		.infobox-value a:hover, .infobox-value a.active {
+            color: #6ee7b7;
+            padding-left: 4px;
+            transition: all 0.15s ease;
+        }
+
         .infobox-table tr:not(:last-child) {
             border-bottom: 1px solid rgba(45, 30, 16, 0.5);
         }
@@ -349,50 +364,61 @@
 
         <!-- 📜 CENTER: The Active Lore Document -->
         <main class="wiki-article">
-            <h1>On the Nature of the Anord</h1>
+		<header>
+            <h1>Ceardlachd Forest</h1>
+		</header>
             
-            <blockquote>
-                "The world does not bleed blood when it is wounded; it bleeds architecture, mathematics, and raw potential. We call this bleeding the Anord, and it is structural failure made manifest." <br>
-                <span style="float: right; font-size: 0.9rem; color: #a78bfa;">— High Scriptor Alistair, Year 142</span>
-            </blockquote>
-
-            <p>The Anord is not a simple corruption or biological blight, but a systemic unraveling of geometric reality itself. Where the Loom of Creation frays, magic bleeds raw into the soil without the stabilizing architecture of ancient ancestral glyphs or natural ley-lines.</p>
-
-            <h2>Anatomical Behavior of a Pulse</h2>
-            <p>When a pulse occurs, physical geography shifts overnight. Rivers twist into impossible angles, long-dead structural ruins re-emerge seamlessly inside living root systems, and distance itself becomes elastic. A path that required three days of march may shorten to a hundred paces, or balloon into an impassable void.</p>
-
-            <h2>Localized Spell Disruptions</h2>
-            <p>Because the mathematical laws governing standard arcana are shattered within an active pulse zone, traditional spell casting becomes highly volatile. Scribes and spell-weavers are strictly ordered to monitor localized containment signatures before executing incantations.</p>
-            
-            <h2>Historical Displacements</h2>
-            <p>Fragments of historical eras long thought consumed by time have been documented reappearing within the deep timber sectors, completely intact but completely hostile to current timeline occupants.</p>
+		<h2>📜 Summary</h2>
+		<p> Bounded by the Fossmore Forest and Mosslight Murmur to the East and South, and with the Cnoic Aran mountains protecting the North and West, Ceardlachd Forest is the bountiful homeland of the Dwarven tribes. Unlike the dark, foreboding tangles of brush and trees found elsewhere in the Tir, Ceardlachd is a breath-taking "Cathedral" forest. Colossal trees stand like pillars in a grand hall, and shafts of golden light pierce the high canopy, illuminating a vibrant, fern covered floor. In the vaulted reaches, the breeze in the leaves sounds like the waves of a distant ocean. The towering oak trees and sprawling pines are spaced widely enough to make navigating the region a simple affair. A network of raised causeways of packed earth and stone called the "High Roads" connects many of the Dwarven settlements, marked every mile by tall and enchanted way-stones that glow with heat when the sun is down.</o>
+		<p> Several waterways spill from the mountains and flow south-east where they converge and meet the Tiriosann. These rivers and creeks provide easy transportation of stone and ores from the mountains to outlying settlements, and lumber felled from the heart of the forest makes its way to be processed and exported at trade hubs such as Tre Coedwig. This has been a point of contention between the Ord Directorate and the Triton Matriarch's, as the Ord-Ri Torin Iron-Heart views the tolls charged by Triton ferry-men to be an attack on Dwarven sovereignty.</p>
+		
+		<h2>🌲 Flora, Fauna, and Fey</h2>
+		<p> Several species of oak tree are native to Ceardlachd, of which the most impressive is the Sovereign Oak. With silvery-grey bark often-times harvested in strips to make rigid, leather-like armor, the Sovereign Oak grows twice the size of normal and forms the under-lying structure for the Forest's "Cathedral"-like character. Yew tree's are also plentiful in Ceardlachd, and the Dwarves believe them to mark the sites of Fey influence. Lady Fern, pincushion moss, and Wood Sorrel blanket the forest floor, and Dwarven foragers make eager use of the wild garlic, chanterelle mushrooms, and wild blueberries that grow in the dappled sunlight.</p>
+		<p> Rabbit and deer inhabit the woods while a variety of birds roost amongst the high boughs. The Stone-Beak Goshawk is favoured by Dwarven huntsmen and trained to hunt smaller game, while Dwarven loggers train them to deliver messages between work camps. Predators include red foxes, timber wolves, and grizzly bears who are perfectly comfortable in the low-lying valleys of the forest or the slopes of the Cnoic Aran mountains.</p>
+		<p> Korreds are commonly sighted Fey in Ceardlachd and typically view the Dwarves with a dispassionate interest. Redcaps and Quicklings have been known to torment Dwarven loggers and sabotage camp operations, while Rum Gremlins can sometimes infest taverns and drinking halls.</p>
+		
+		<h3> Iron Root</h3>
+		<p> A knotty tuber with a reddish hue, the Iron-Root is found growing at the base of yew trees. To the palate of a dwarf, it offers a sharp, sinus-clearing heat and is often grated over meat to aid in digestion. For non-dwarves, this stable condiment is a potent hallucinogen that causes severe vertigo and vivid visions of the earth breathing if even a small amount is consumed.</p>
+		
+		<h3> Copper-Fern</h3>
+		<p> A distinctive fern similar to bracken, the Copper-Fern turns a metallic green when it grows over shallow deposits of metal such as copper. Dwarven prospectors rely on these patches, viewing them as a blessing of Govannon.</p>
+		
+		<h3> The Crowned Hart</h3>
+		<p> A distinctive species of deer common in the area around Ceardaigh. Coloured a deep red, with a unique "crown" pattern on their heads, they are protected game that only the Gaisce clans are permitted to hunt.</p>
         </main>
 
         <!-- 📊 RIGHT SIDE: Quick-Reference Dossier Data -->
         <aside class="wiki-infobox">
-            <h3 class="infobox-title">Phenomenon Dossier</h3>
-            <div class="infobox-image">🌀</div>
+            <h3 class="infobox-title">Regional Dossier</h3>
+            <div class="infobox-image"><img src="images/CeardlachdForest.png"></div>
             
             <table class="infobox-table">
                 <tr>
+					<td class="infobox-label">Pronunciation</td>
+					<td class="infobox-value">KYARD-LOKHT</td>
+				</tr>
+				<tr>
                     <td class="infobox-label">Classification</td>
-                    <td class="infobox-value">Reality Anomaly (Structural)</td>
+                    <td class="infobox-value">Forest</td>
                 </tr>
                 <tr>
-                    <td class="infobox-label">Threat Index</td>
-                    <td class="infobox-value" style="color: #fca5a5; font-weight: bold;">CRITICAL (Tier IV)</td>
+                    <td class="infobox-label">Primary Inhabitants</td>
+                    <td class="infobox-value">Dwarves</td>
                 </tr>
                 <tr>
-                    <td class="infobox-label">Primary Effect</td>
-                    <td class="infobox-value">Geographical Flux, Spatial Elasticity</td>
+                    <td class="infobox-label">Primary Settlement</td>
+                    <td class="infobox-value">Ceardaigh</td>
                 </tr>
                 <tr>
-                    <td class="infobox-label">Magic State</td>
-                    <td class="infobox-value">Unbound / Highly Volatile</td>
+                    <td class="infobox-label">Other Locales</td>
+                    <td class="infobox-value">
+						<a href="TreCoedwig.html">Tre Coedwig</a><br>
+						Caillech's Foot<br>
+					</td>
                 </tr>
                 <tr>
-                    <td class="infobox-label">Countermeasure</td>
-                    <td class="infobox-value">Glyph Stabilization, Iron-binding Arcs</td>
+                    <td class="infobox-label">Danger Level</td>
+                    <td class="infobox-value">Low</td>
                 </tr>
             </table>
         </aside>
